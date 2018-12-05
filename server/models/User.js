@@ -5,12 +5,10 @@ const { Schema } = mongoose;
 // define schema for model
 const userScema = new Schema({
   googleID: {
-    type: String,
-    required: true
+    type: String
   },
   email: {
-    type: String,
-    required: true
+    type: String
   },
   createdOn: {
     type: Date,
@@ -19,4 +17,4 @@ const userScema = new Schema({
 });
 
 // create the user model to be used for adding to/creating users collection in db
-module.exports = mongoose.model('users', userScema);
+mongoose.model('users', userScema);

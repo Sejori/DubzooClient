@@ -24,8 +24,7 @@ passport.use(
       // params sent in header
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: '/api/auth/google/callback',
-      scope: ['profile', 'email'],
+      callbackURL: '/auth/google/callback',
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
@@ -35,12 +34,8 @@ passport.use(
         // already exists
         return done(null, existingUser);
       }
-
       //doesn't already exist
-      const user = await new User({
-        googleID: profile.id,
-        email: profile.email
-      }).save()
+      const user = await new User({ googleID: profile.id }).save()
       done(null, user);
     }
   )

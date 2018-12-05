@@ -9,17 +9,18 @@ module.exports = (app) => {
   // need to be required in this file.
 
   // standard express GET handlers with passport authentication initialisation
-  app.get('/api/auth/google',
-    passport.authenticate('google', {})
+  app.get('/auth/google',
+    passport.authenticate('google', {
+      scope: ['profile', 'email']
+    })
   );
 
-  app.get('/api/auth/google/callback',
+  app.get('/auth/google/callback',
     passport.authenticate('google', {
     })
   );
 
-  // API endpoints
-  app.get('/api/logout', (req,res) => {
+  app.get('/auth/logout', (req,res) => {
     req.logout();
     res.send(req.user);
   });
