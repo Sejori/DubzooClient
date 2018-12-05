@@ -26,6 +26,17 @@ app.use(passport.session());
 // start listening to authentication URLs via authRoutes.js
 require('./routes/authRoutes')(app);
 
+// express configuration for prod vs dev
+// order of operations important as express will use static build before sending requests to index.html
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+
+  const path = require('path');
+  app.get('*', (req,res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 // use server port from .env file in production or default to 5000 for local dev.
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
