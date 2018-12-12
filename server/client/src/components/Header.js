@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Container, Navbar, NavbarBrand, NavbarItem, NavbarBurger, NavbarMenu, NavbarEnd } from 'bloomer';
 
 class Header extends Component {
-  renderContent() {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isActive: false,
+    }
+  }
+
+
+  renderLoginContent() {
     switch (this.props.auth) {
       case null:
         return
@@ -15,22 +25,34 @@ class Header extends Component {
     }
   }
 
+  onClickNav = () => {
+    if (this.state.isActive) {
+      this.setState({ isActive: false })
+    } else {
+      this.setState({ isActive: true })
+    }
+  }
+
   render() {
-    console.log(this.props.auth)
     return (
-      <nav>
-        <div className="nav-wrapper">
-          <Link to={this.props.auth ? '/dashboard' : '/' }>
-            DUBZOO!
-          </Link>
-          <ul className="right">
-            <li>
-              {this.renderContent()}
-            </li>
-          </ul>
-        </div>
-      </nav>
-    );
+      <Container>
+        <Navbar style={{ margin: '5px' }}>
+          <NavbarBrand>
+            <NavbarItem>
+              <Link to={this.props.auth ? '/dashboard' : '/' }>
+                DUBZOO
+              </Link>
+            </NavbarItem>
+            <NavbarBurger isActive={this.state.isActive} onClick={this.onClickNav} />
+          </NavbarBrand>
+          <NavbarMenu isActive={this.state.isActive} onClick={this.onClickNav}>
+            <NavbarEnd>
+              <NavbarItem>{this.renderLoginContent()}</NavbarItem>
+            </NavbarEnd>
+          </NavbarMenu>
+        </Navbar>
+      </Container>
+    )
   }
 }
 

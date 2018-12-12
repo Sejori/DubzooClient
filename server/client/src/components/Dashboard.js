@@ -1,15 +1,16 @@
 import React from 'react';
 import { Container, Title } from 'bloomer';
 
-const Landing = () => {
+const Dashboard = () => {
   return(
+    // Need to implement social metric viewer component here!
     <Container>
       <Title>
         Dubzoo!
       </Title>
       Be a better musician fool.
-    </Container>
+    </Container> 
   )
 }
 
-export default Landing;
+export default Dashboard;

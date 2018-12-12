@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import axios from 'axios';
+import '../bulmaStyles.css';
 
 // components
 import Header from './Header.js';
 import Landing from './Landing.js'
-const Dashboard = () => <h2>Dashboard</h2>
+import Dashboard from './Dashboard.js'
 
 class App extends Component {
   constructor(props) {

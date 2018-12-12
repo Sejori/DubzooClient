@@ -4,7 +4,10 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "bloomer": "^0.6.5",
+    "bulma": "^0.7.2",
     "http-proxy-middleware": "^0.19.1",
+    "node-sass": "^4.10.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1",
@@ -14,7 +17,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "css-build": "node-sass --omit-source-map-url sass/bulmaStyles.scss src/bulmaStyles.css"
   },
   "eslintConfig": {
     "extends": "react-app"
