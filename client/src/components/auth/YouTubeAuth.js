@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 
-const keys = require('../../config/keys')
+const keys = require('../../config/keys');
 
 class YouTubeAuth extends Component {
   constructor(props) {
@@ -22,6 +22,8 @@ class YouTubeAuth extends Component {
   };
 
   googleResponse = (response) => {
+
+    this.setState({ userID: response.googleId })
     // pass credentials to UpdateUser function prop from parent component
     this.props.UpdateUser(
       response.googleId,

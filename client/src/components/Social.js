@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import YouTubeAuth from './auth/YouTubeAuth';
+import YouTubeData from './data/YouTubeData';
+
+var Auth;
+var Data;
 
 class Social extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: {
-        userID: [],
-        name: [],
-        email: [],
-        accessToken: []
-      },
-      data: []
+      user: undefined,
+      data: undefined
     }
   }
 
@@ -29,34 +28,34 @@ class Social extends Component {
     this.setState({ user: user });
   }
 
-  // FetchData = async () => {
-  //
-  // }
+  // called from data child
+  UpdateData = (arg1, arg2) => {
+
+    let data = {
+      arg1: arg1,
+      arg2: arg2
+    }
+
+    this.setState({ data: data });
+  }
 
   render() {
-    switch(this.props.target) {
-      case null:
-        return(
-          <div className="Social">
-            <h2>BUG: Please supply a Social target.</h2>
-          </div>
-        );
 
-      case "YouTube":
-        return(
-          <div className="Social">
-            <h2>{this.props.target}</h2>
-            <YouTubeAuth UpdateUser={this.UpdateUser}/>
-          </div>
-        );
-
-      default:
-        return(
-          <div className="Social">
-            <h2>BUG: This Social target does not exist.</h2>
-          </div>
-        );
+    if (this.props.target === "YouTube") {
+      Auth = <YouTubeAuth UpdateUser={this.UpdateUser}/>;
+      Data = <YouTubeData user={this.state.user} UpdateData={this.UpdateData}/>;
+    } else {
+      Auth = "Please supply a configured target";
     }
+
+    return(
+      <div className="Social">
+        <h2>{this.props.target}</h2>
+        {Data}
+        {Auth}
+      </div>
+    );
+
   }
 }
 

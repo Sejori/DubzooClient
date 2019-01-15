@@ -8,6 +8,10 @@ body {
   padding-right: 10%;
 }
 
+h2 {
+  margin: 10px;
+}
+
 .header {
   list-style-type: none;
   text-align: center;
@@ -25,8 +29,6 @@ body {
 
 .socials li {
   display: inline-block;
-  font-size: 20px;
-  padding: 20px;
 }
 
 .Social {
@@ -34,6 +36,10 @@ body {
   border: solid;
   border-width: 2px;
   border-color: grey;
-  padding: 10px;
+  padding: 20px;
   margin: 10px;
+}
+
+.Data {
+  padding: 20px;
 }
