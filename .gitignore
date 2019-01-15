@@ -1,2 +1,3 @@
-server/.git
-server/.gitignore
+client/src/config/config.js
+
+client/node_modules
