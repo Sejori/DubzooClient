@@ -8,47 +8,69 @@ class YouTubeAuth extends Component {
     super(props);
 
     this.state = {
-      authorised: false
+      authorised: false,
+      youtubeaccountId: undefined
     }
   }
 
   componentDidMount = () => {
-    this.CheckCredentials();
+    this.checkCredentials();
   }
 
-  CheckCredentials = () => {
-
+  checkCredentials = async() => {
     // Retrieve credentials from database
-    fetch(keys.STRAPI_URI + '/users/me', {
+    const response = await fetch(keys.STRAPI_URI + '/users/me', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + this.props.user.jwt
       },
     })
-    .then(response => response.json())
-    .then(response => this.IsTokenValid(response))
+    const json = await response.json();
+    this.isTokenValid(json)
+    this.setYouTubeAccountId(json)
   }
 
-  IsTokenValid = (response) => {
-    if (response.youtubeaccounts[0] === undefined) {
+  isTokenValid = (response) => {
+    if (response.youtubeaccount == null) {
       this.setState({ authorised: false })
     } else {
-      if (response.youtubeaccounts[0].tokenObj.access_token !== undefined) {
+      if (response.youtubeaccount.tokenObj.access_token != null) {
         this.setState({ authorised: true })
       }
-      if (response.youtubeaccounts[0].tokenObj.expires_at < new Date().getTime()) {
+      if (response.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
         this.setState({ authorised: false })
         alert("Uh-oh. Your access has expired, please sign-in again :)")
       }
     }
   }
 
+  setYouTubeAccountId = (response) => {
+    if (response.youtubeaccount != null) {
+      this.setState({ youtubeaccountId: response.youtubeaccount._id })
+    }
+  }
+
+  logout = () => {
+    // Retrieve credentials from database
+    fetch(keys.STRAPI_URI + '/youtubeaccounts/' + this.state.youtubeaccountId, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + this.props.user.jwt
+      },
+    })
+    this.setState({
+      authorised: false,
+      youtubeaccountId: undefined
+     })
+  }
+
   onFailure = (error) => {
     console.log(error);
   };
 
-  googleResponse = (response) => {
+  googleResponse = async(response) => {
 
     let channelName = response.profileObj.name;
     let profileObj = response.profileObj;
@@ -56,7 +78,7 @@ class YouTubeAuth extends Component {
     let user = this.props.user.userID;
 
     // Store retrieved credentials in database
-    fetch(keys.STRAPI_URI + '/youtubeaccounts', {
+    await fetch(keys.STRAPI_URI + '/youtubeaccounts', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -69,9 +91,7 @@ class YouTubeAuth extends Component {
         "user": user
       })
     })
-
-    // call check credentials fcn
-    this.CheckCredentials();
+    this.checkCredentials()
   }
 
   render() {
@@ -81,7 +101,7 @@ class YouTubeAuth extends Component {
           <div>
               <GoogleLogin
                   clientId={keys.GOOGLE_CLIENT_ID}
-                  scope={keys.YOUTUBE_AUTH_SCOPE}
+                  scope={keys.YOUTUBE_ANALYTICS_SCOPE}
                   buttonText="Login"
                   responseType="id_token"
                   prompt="consent"

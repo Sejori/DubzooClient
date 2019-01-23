@@ -13,12 +13,6 @@ class StrapiAuth extends Component {
     }
   }
 
-  // PUT AXIOS AUTH FUNCTIONS HERE
-  async getData(){
-   const res = await axios('/data');
-   return await res.json();
-}
-
   Register = () => {
 
     if (this.usernameInput || this.passwordInput || this.emailInput === "" ) {
@@ -66,8 +60,12 @@ class StrapiAuth extends Component {
   }
 
   Logout = () => {
-    this.setState({ usernameInput: "" })
-    this.props.UpdateUser(undefined, undefined);
+    this.setState({
+      usernameInput: "",
+      emailInput: "",
+      passwordInput: ""
+     })
+    this.props.UpdateUser(undefined, undefined, undefined);
   }
 
   handleChange = ({ target }) => {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import keys from '../config/keys';
 
 import YouTubeAuth from './auth/YouTubeAuth';
 import YouTubeData from './data/YouTubeData';
@@ -29,7 +28,6 @@ class Social extends Component {
       Auth = "^ Please login above ^";
       Data = "";
     } else {
-      {this.CheckIfValidSocialCredentialsExist();}
       if (this.props.target === "YouTube") {
         Auth = <YouTubeAuth user={this.props.user}/>;
         Data = <YouTubeData user={this.props.user}/>;
