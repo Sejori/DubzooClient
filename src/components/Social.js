@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import keys from '../config/keys';
 
 import YouTubeAuth from './auth/YouTubeAuth';
 import YouTubeData from './data/YouTubeData';
@@ -12,34 +13,7 @@ class Social extends Component {
 
     this.state = {
       loggedIn: false,
-      socialUser: undefined,
-      socialData: undefined
     }
-  }
-
-  // called from auth child
-  UpdateUser = (userID, name, email, accessToken) => {
-
-    let socialUser = {
-      userID: userID,
-      name: name,
-      email: email,
-      accessToken: accessToken
-    }
-
-    this.setState({ socialUser: socialUser });
-
-  }
-
-  // called from data child
-  UpdateData = (arg1, arg2) => {
-
-    let socialData = {
-      arg1: arg1,
-      arg2: arg2
-    }
-
-    this.setState({ socailData: socialData });
   }
 
   componentDidUpdate = (prevProps) => {
@@ -55,9 +29,10 @@ class Social extends Component {
       Auth = "^ Please login above ^";
       Data = "";
     } else {
+      {this.CheckIfValidSocialCredentialsExist();}
       if (this.props.target === "YouTube") {
-        Auth = <YouTubeAuth user={this.props.user} UpdateUser={this.UpdateUser}/>;
-        Data = <YouTubeData user={this.props.user} socialUser={this.state.socialUser} UpdateData={this.UpdateData}/>;
+        Auth = <YouTubeAuth user={this.props.user}/>;
+        Data = <YouTubeData user={this.props.user}/>;
       } else {
         Auth = "DEV ISSUE: Please supply a configured target";
       }

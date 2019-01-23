@@ -1,22 +1,48 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
-import axios from 'axios';
 
 const keys = require('../../config/keys');
 
 class YouTubeAuth extends Component {
   constructor(props) {
-      super(props);
+    super(props);
 
-      // only userID needed in this component to check whether logged in or not.
-      this.state = {
-        socialUserID: '',
-      };
+    this.state = {
+      authorised: false
+    }
   }
 
-  logout = () => {
-      this.setState({ socialUserID: '' })
-  };
+  componentDidMount = () => {
+    this.CheckCredentials();
+  }
+
+  CheckCredentials = () => {
+
+    // Retrieve credentials from database
+    fetch(keys.STRAPI_URI + '/users/me', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + this.props.user.jwt
+      },
+    })
+    .then(response => response.json())
+    .then(response => this.IsTokenValid(response))
+  }
+
+  IsTokenValid = (response) => {
+    if (response.youtubeaccounts[0] === undefined) {
+      this.setState({ authorised: false })
+    } else {
+      if (response.youtubeaccounts[0].tokenObj.access_token !== undefined) {
+        this.setState({ authorised: true })
+      }
+      if (response.youtubeaccounts[0].tokenObj.expires_at < new Date().getTime()) {
+        this.setState({ authorised: false })
+        alert("Uh-oh. Your access has expired, please sign-in again :)")
+      }
+    }
+  }
 
   onFailure = (error) => {
     console.log(error);
@@ -24,44 +50,33 @@ class YouTubeAuth extends Component {
 
   googleResponse = (response) => {
 
-    this.setState({ socailUserID: response.googleId })
+    let channelName = response.profileObj.name;
+    let profileObj = response.profileObj;
+    let tokenObj = response.tokenObj;
+    let user = this.props.user.userID;
 
-    // pass credentials to UpdateUser function prop from parent component
-    this.props.UpdateUser(
-      response.googleId,
-      response.profileObj.name,
-      response.profileObj.email,
-      response.tokenObj.access_token
-    );
-
-    // PUT Social acount to Strapi user in db /${this.props.user.jwt}
-    console.log(this.props.user.username, this.props.user.jwt)
-    axios
-      .put(`http://localhost:1337/users/${this.props.user.username}`, {
-        headers: {
-          Authorization: `Bearer ${this.props.user.jwt}`
-        },
-        YouTubeUserID: response.googleId,
-        YouTubeName: response.profileObj.name,
-        YouTubeAccessToken: response.tokenObj.access_token
+    // Store retrieved credentials in database
+    fetch(keys.STRAPI_URI + '/youtubeaccounts', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + this.props.user.jwt
+      },
+      body: JSON.stringify({
+        "channelName": channelName,
+        "profileObj": profileObj,
+        "tokenObj": tokenObj,
+        "user": user
       })
-      .then(response => {
-        // Handle success.
-        console.log(
-          'Well done, your post has been successfully updated: ',
-          response.data
-        );
-      })
-      .catch(error => {
-        // Handle error.
-        console.log('An error occurred:', error);
-      });
+    })
 
+    // call check credentials fcn
+    this.CheckCredentials();
   }
 
   render() {
-    switch (this.state.socialUserID) {
-      case '':
+    switch (this.state.authorised) {
+      case false:
         return(
           <div>
               <GoogleLogin

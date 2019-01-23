@@ -7,12 +7,16 @@ class App extends Component {
     super(props);
 
     this.state = {
-      user: { username: undefined, jwt: undefined }
-   }
- }
+      user: {
+        userID: undefined,
+        username: undefined,
+        jwt: undefined
+      }
+    }
+  }
 
-  UpdateUser = (username, jwt) => {
-    let user = { username, jwt };
+  UpdateUser = (userID, username, jwt) => {
+    let user = { userID, username, jwt };
     this.setState({ user: user });
   }
 

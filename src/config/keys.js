@@ -5,5 +5,6 @@ module.exports = {
   GOOGLE_API_KEY: "AIzaSyCaP5sa-mc5m0IHIXMSltkZpEkzdGZX7vE",
   YOUTUBE_ANALYTICS_URI: "https://youtubeanalytics.googleapis.com/v2/reports",
   YOUTUBE_AUTH_SCOPE: "https://www.googleapis.com/auth/youtube.readonly",
-  YOUTUBE_ANALYTICS_SCOPE: "https://www.googleapis.com/auth/yt-analytics.readonly"
+  YOUTUBE_ANALYTICS_SCOPE: "https://www.googleapis.com/auth/yt-analytics.readonly",
+  STRAPI_URI: "http://localhost:1337"
 }

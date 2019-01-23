@@ -34,7 +34,7 @@ class StrapiAuth extends Component {
       })
       .then(response => {
         // Update React State Credentials
-        this.props.UpdateUser(response.data.user.username, response.data.jwt);
+        this.props.UpdateUser(response.data.user.id, response.data.user.username, response.data.jwt);
       })
       .catch(error => {
         // Handle error.
@@ -57,7 +57,7 @@ class StrapiAuth extends Component {
       })
       .then(response => {
         // Update React State Credentials
-        this.props.UpdateUser(response.data.user.username, response.data.jwt);
+        this.props.UpdateUser(response.data.user.id, response.data.user.username, response.data.jwt);
       })
       .catch(error => {
         // Handle error.

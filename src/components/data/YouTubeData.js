@@ -12,6 +12,8 @@ class YouTubeData extends Component {
       channelName: "",
 
     }
+
+    // PUT DB QUERY TO GET SOCIAL ACCOUNT DETAILS HERE
   }
 
   componentDidUpdate = (prevProps) => {
@@ -62,6 +64,7 @@ class YouTubeData extends Component {
 
   render() {
 
+    // change this to use db data to check if can fetchData
     if (this.state.socialUser === undefined) {
       Content = "";
     } else {
