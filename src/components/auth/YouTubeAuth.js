@@ -8,7 +8,6 @@ class YouTubeAuth extends Component {
     super(props);
 
     this.state = {
-      authorised: false,
       youtubeaccountId: undefined
     }
   }
@@ -28,18 +27,18 @@ class YouTubeAuth extends Component {
     })
     const json = await response.json();
     this.isTokenValid(json)
-    this.setYouTubeAccountId(json)
   }
 
   isTokenValid = (response) => {
     if (response.youtubeaccount == null) {
-      this.setState({ authorised: false })
+      return;
     } else {
       if (response.youtubeaccount.tokenObj.access_token != null) {
-        this.setState({ authorised: true })
+        this.setYouTubeAccountId(response);
+        this.props.Authorise();
       }
       if (response.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
-        this.setState({ authorised: false })
+        this.logout();
         alert("Uh-oh. Your access has expired, please sign-in again :)")
       }
     }
@@ -60,10 +59,7 @@ class YouTubeAuth extends Component {
         "Authorization": "Bearer " + this.props.user.jwt
       },
     })
-    this.setState({
-      authorised: false,
-      youtubeaccountId: undefined
-     })
+    this.setState({ youtubeaccountId: undefined })
   }
 
   onFailure = (error) => {
@@ -91,17 +87,17 @@ class YouTubeAuth extends Component {
         "user": user
       })
     })
-    this.checkCredentials()
+    this.checkCredentials();
   }
 
   render() {
-    switch (this.state.authorised) {
+    switch (this.props.authorised) {
       case false:
         return(
           <div>
               <GoogleLogin
                   clientId={keys.GOOGLE_CLIENT_ID}
-                  scope={keys.YOUTUBE_ANALYTICS_SCOPE}
+                  scope={keys.YOUTUBE_SCOPES}
                   buttonText="Login"
                   responseType="id_token"
                   prompt="consent"

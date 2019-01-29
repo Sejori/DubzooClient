@@ -12,28 +12,29 @@ class Social extends Component {
 
     this.state = {
       loggedIn: false,
+      authorised: false
     }
   }
 
-  componentDidUpdate = (prevProps) => {
-    // Typical usage (don't forget to compare props):
-    if (this.props.user.jwt !== prevProps.user.jwt) {
-     this.setState({ loggedIn: !this.state.loggedIn });
-    }
+  Authorise = () => {
+    this.setState({ authorised: !this.state.authorised })
   }
 
   render() {
 
-    if (this.state.loggedIn === false) {
+    if (this.props.user.jwt === undefined) {
       Auth = "^ Please login above ^";
       Data = "";
     } else {
       if (this.props.target === "YouTube") {
-        Auth = <YouTubeAuth user={this.props.user}/>;
-        Data = <YouTubeData user={this.props.user}/>;
+        Auth = <YouTubeAuth user={this.props.user} authorised={this.state.authorised} Authorise={this.Authorise}/>;
+        Data = <YouTubeData user={this.props.user} authorised={this.state.authorised} Authorise={this.Authorise}/>;
       } else {
         Auth = "DEV ISSUE: Please supply a configured target";
       }
+    }
+    if (this.state.authorised === false) {
+      Data = "";
     }
 
     return(
@@ -45,6 +46,7 @@ class Social extends Component {
     );
 
   }
+
 }
 
 export default Social;

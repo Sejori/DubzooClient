@@ -5,29 +5,8 @@ const keys = require('../../config/keys');
 var Content;
 
 class YouTubeData extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      channelName: "",
-
-    }
-
-    // PUT DB QUERY TO GET SOCIAL ACCOUNT DETAILS HERE
-  }
-
-  componentDidUpdate = (prevProps) => {
-    // Typical usage (don't forget to compare props):
-    if (this.props.socialUser !== prevProps.socialUser) {
-     this.setState({ socialUser: this.props.socialUser });
-    }
-  }
-
-  FetchData = async() => {
-
-    // PUT DB QUERY TO GET SOCIAL ACCOUNT DETAILS HERE
-    alert("you got here");
-
+  GetDates = () => {
     // getting current date
     var today = new Date();
     let dd = today.getDate();
@@ -35,41 +14,85 @@ class YouTubeData extends Component {
     let yyyy = today.getFullYear();
     today = mm+'-'+dd+'-'+yyyy;
 
-    yyyy = yyyy - 1;
-    var yearAgo = mm+'-'+dd+'-'+yyyy;
+    mm = mm - 1;
+    var monthAgo = mm+'-'+dd+'-'+yyyy;
 
-    // GET YT Analytics API
-    axios
-      .get(keys.YOUTUBE_ANALYTICS_URI, {
-        access_token: this.props.user.accessToken,
-        endDate: today,
-        ids: this.state.channelName,
-        scope: keys.YOUTUBE_SCOPES,
-        startDate: yearAgo,
-        metrics: 'estimatedMinutesWatched,views,likes,subscribersGained',
-        dimensions: 'hour',
-        sort: 'day'
-      })
-      .then(response => {
-        // Handle success.
-        console.log('Well done!');
-        console.log(response);
-      })
-      .catch(error => {
-        // Handle error.
-        console.log('An error occurred:', error);
-      });
+    return(today, monthAgo);
+  }
+
+  FetchData = async() => {
+
+    // get YT credentials from db
+    const appResponse = await fetch(keys.STRAPI_URI + '/users/me', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + this.props.user.jwt
+      },
+    })
+    const appJson = await appResponse.json();
+
+    if (appJson.youtubeaccount == null) {
+      alert("Something went wrong!")
+    } else {
+      if (appJson.youtubeaccount.tokenObj.access_token != null) {
+        var accessToken = appJson.youtubeaccount.tokenObj.access_token;
+        var channelName = appJson.youtubeaccount.profileObj.name;
+      }
+      if (appJson.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
+        alert("Uh-oh. Your access has expired, please sign-in again :)")
+      }
+    }
+
+    // USE A LONG ENDPOINT URI INSTEAD
+    // Store retrieved credentials in database
+    const youTubeResponse = await fetch(keys.YOUTUBE_ANALYTICS_URI, {
+      method: "GET",
+      headers: {
+        "Access-Control-Allow-Origin": 'true',
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+        "ids": 'channel==' + channelName,
+        "accessToken": accessToken,
+        "scope": keys.YOUTUBE_SCOPES,
+        "endDate": this.GetDates().today,
+        "scope": keys.YOUTUBE_SCOPES,
+        "startDate": this.GetDates().monthAgo,
+        "metrics": 'estimatedMinutesWatched,views,likes,subscribersGained',
+        "dimensions": 'hour',
+        "sort": 'day'
+      }
+    })
+    const youTubeJson = await youTubeResponse.json();
+    console.log(youTubeJson);
+
+    // // GET YT Analytics API
+    // axios
+    //   .get(keys.YOUTUBE_ANALYTICS_URI, {
+    //     access_token: accessToken,
+    //     endDate: today,
+    //     ids: channelName,
+    //     scope: keys.YOUTUBE_SCOPES,
+    //     startDate: monthAgo,
+    //     metrics: 'estimatedMinutesWatched,views,likes,subscribersGained',
+    //     dimensions: 'hour',
+    //     sort: 'day'
+    //   })
+    //   .then(response => {
+    //     // Handle success.
+    //     console.log('Well done!');
+    //     console.log(response);
+    //   })
+    //   .catch(error => {
+    //     // Handle error.
+    //     console.log('An error occurred:', error);
+    //   });
 
   }
 
   render() {
 
-    // change this to use db data to check if can fetchData
-    if (this.state.socialUser === undefined) {
-      Content = "";
-    } else {
-      Content = <button onClick={this.FetchData}>Fetch Data</button>
-    }
+    Content = <button onClick={this.FetchData}>Fetch Data</button>
 
     return(
       <div className="Data">
