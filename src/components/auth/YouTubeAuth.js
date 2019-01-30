@@ -4,16 +4,15 @@ import { GoogleLogin } from 'react-google-login';
 const keys = require('../../config/keys');
 
 class YouTubeAuth extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      youtubeaccountId: undefined
-    }
-  }
 
   componentDidMount = () => {
     this.checkCredentials();
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.authorised !== prevProps.authorised) {
+      this.render();
+    }
   }
 
   checkCredentials = async() => {
@@ -59,7 +58,7 @@ class YouTubeAuth extends Component {
         "Authorization": "Bearer " + this.props.user.jwt
       },
     })
-    this.setState({ youtubeaccountId: undefined })
+    this.props.Authorise();
   }
 
   onFailure = (error) => {
@@ -94,7 +93,7 @@ class YouTubeAuth extends Component {
     switch (this.props.authorised) {
       case false:
         return(
-          <div>
+          <div className="YouTubeAuth">
               <GoogleLogin
                   clientId={keys.GOOGLE_CLIENT_ID}
                   scope={keys.YOUTUBE_SCOPES}

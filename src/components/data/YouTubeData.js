@@ -2,26 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 const keys = require('../../config/keys');
-var Content;
 
 class YouTubeData extends Component {
 
-  GetDates = () => {
-    // getting current date
-    var today = new Date();
-    let dd = today.getDate();
-    let mm = today.getMonth()+1;
-    let yyyy = today.getFullYear();
-    today = mm+'-'+dd+'-'+yyyy;
-
-    mm = mm - 1;
-    var monthAgo = mm+'-'+dd+'-'+yyyy;
-
-    return(today, monthAgo);
-  }
-
   FetchData = async() => {
-
     // get YT credentials from db
     const appResponse = await fetch(keys.STRAPI_URI + '/users/me', {
       method: "GET",
@@ -31,74 +15,112 @@ class YouTubeData extends Component {
       },
     })
     const appJson = await appResponse.json();
-
     if (appJson.youtubeaccount == null) {
-      alert("Something went wrong!")
+      alert("Something went wrong when fetching your data.")
     } else {
       if (appJson.youtubeaccount.tokenObj.access_token != null) {
         var accessToken = appJson.youtubeaccount.tokenObj.access_token;
-        var channelName = appJson.youtubeaccount.profileObj.name;
       }
       if (appJson.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
-        alert("Uh-oh. Your access has expired, please sign-in again :)")
+        alert("Something went wrong when fetching your data.")
       }
     }
 
-    // USE A LONG ENDPOINT URI INSTEAD
-    // Store retrieved credentials in database
-    const youTubeResponse = await fetch(keys.YOUTUBE_ANALYTICS_URI, {
+    // getting current date
+    let date = new Date();
+    let dd = date.getDate();
+    let mm = date.getMonth()+1;
+    let yyyy = date.getFullYear();
+
+    date.setDate(date.getDate() - 31);
+    let ddPast = date.getDate();
+    let mmPast = date.getMonth()+1;
+    let yyyyPast = date.getFullYear();
+
+    if (mm.toString().length < 2) mm = '0' + mm;
+    if (dd.toString().length < 2) dd = '0' + dd;
+    if (mmPast.toString().length < 2) mm = '0' + mmPast;
+    if (ddPast.toString().length < 2) dd = '0' + ddPast;
+
+    let today = yyyy+'-'+mm+'-'+dd;
+    let monthAgo = yyyyPast+'-'+mmPast+'-'+ddPast;
+
+    // Request data from youtube
+    axios.get(keys.YOUTUBE_ANALYTICS_URI,
+      {
+        headers: {
+        //  "Access-Control-Allow-Origin": 'true',
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + accessToken,
+        },
+        params: {
+          "ids": 'channel==MINE',
+          "accessToken": accessToken,
+          "scope": keys.YOUTUBE_SCOPES,
+          "endDate": today,
+          "startDate": monthAgo,
+          "metrics": 'views,likes,comments,shares,subscribersGained,subscribersLost,averageViewDuration,videosAddedToPlaylists',
+          "dimensions": 'day',
+          "sort": 'day',
+          "key": keys.GOOGLE_API_KEY
+        },
+      }
+    )
+    .then(response => {
+      let data = this.MakeArray(response);
+      this.UpdateData(data);
+    })
+  }
+
+  MakeArray = (response) => {
+    let headers = [];
+    let data = response.data.rows;
+
+    response.data.columnHeaders.map((currElement, index) => {
+      headers[index] = currElement.name;
+      return 'X';
+    });
+
+    data.splice(0, 0, headers);
+    return(data);
+  }
+
+  UpdateData = async(data) => {
+
+    // Get users youtube account from db
+    const response = await fetch(keys.STRAPI_URI + '/users/me', {
       method: "GET",
       headers: {
-        "Access-Control-Allow-Origin": 'true',
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + accessToken,
-        "ids": 'channel==' + channelName,
-        "accessToken": accessToken,
-        "scope": keys.YOUTUBE_SCOPES,
-        "endDate": this.GetDates().today,
-        "scope": keys.YOUTUBE_SCOPES,
-        "startDate": this.GetDates().monthAgo,
-        "metrics": 'estimatedMinutesWatched,views,likes,subscribersGained',
-        "dimensions": 'hour',
-        "sort": 'day'
-      }
+        "Authorization": "Bearer " + this.props.user.jwt
+      },
     })
-    const youTubeJson = await youTubeResponse.json();
-    console.log(youTubeJson);
+    const json = await response.json();
 
-    // // GET YT Analytics API
-    // axios
-    //   .get(keys.YOUTUBE_ANALYTICS_URI, {
-    //     access_token: accessToken,
-    //     endDate: today,
-    //     ids: channelName,
-    //     scope: keys.YOUTUBE_SCOPES,
-    //     startDate: monthAgo,
-    //     metrics: 'estimatedMinutesWatched,views,likes,subscribersGained',
-    //     dimensions: 'hour',
-    //     sort: 'day'
-    //   })
-    //   .then(response => {
-    //     // Handle success.
-    //     console.log('Well done!');
-    //     console.log(response);
-    //   })
-    //   .catch(error => {
-    //     // Handle error.
-    //     console.log('An error occurred:', error);
-    //   });
-
+    // send data to youtube account from db
+    fetch(keys.STRAPI_URI + '/youtubeaccounts/' + json.youtubeaccount._id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + this.props.user.jwt
+      },
+      body: JSON.stringify({
+        "data": data
+      })
+    })
+    .catch(error => {
+      console.log(error)
+    })
   }
 
   render() {
 
-    Content = <button onClick={this.FetchData}>Fetch Data</button>
-
     return(
-      <div className="Data">
-        {Content}
+      <div className="YouTubeData">
+        <button onClick={this.FetchData}>Fetch Data</button>
       </div>
     );
+
   }
 }
 

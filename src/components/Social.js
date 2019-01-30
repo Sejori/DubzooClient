@@ -28,7 +28,7 @@ class Social extends Component {
     } else {
       if (this.props.target === "YouTube") {
         Auth = <YouTubeAuth user={this.props.user} authorised={this.state.authorised} Authorise={this.Authorise}/>;
-        Data = <YouTubeData user={this.props.user} authorised={this.state.authorised} Authorise={this.Authorise}/>;
+        Data = <YouTubeData user={this.props.user}/>;
       } else {
         Auth = "DEV ISSUE: Please supply a configured target";
       }
