@@ -4,6 +4,11 @@ import axios from 'axios';
 const keys = require('../../config/keys');
 
 class YouTubeData extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { Loading: false }
+  }
 
   FetchData = async() => {
     // get YT credentials from db
@@ -39,8 +44,8 @@ class YouTubeData extends Component {
 
     if (mm.toString().length < 2) mm = '0' + mm;
     if (dd.toString().length < 2) dd = '0' + dd;
-    if (mmPast.toString().length < 2) mm = '0' + mmPast;
-    if (ddPast.toString().length < 2) dd = '0' + ddPast;
+    if (mmPast.toString().length < 2) mmPast = '0' + mmPast;
+    if (ddPast.toString().length < 2) ddPast = '0' + ddPast;
 
     let today = yyyy+'-'+mm+'-'+dd;
     let monthAgo = yyyyPast+'-'+mmPast+'-'+ddPast;
@@ -67,6 +72,11 @@ class YouTubeData extends Component {
       }
     )
     .then(response => {
+      this.setState({ Loading: true })
+      while (response === null) {
+        //
+      }
+      this.setState({ Loading: false })
       let data = this.MakeArray(response);
       this.UpdateData(data);
     })
@@ -115,12 +125,19 @@ class YouTubeData extends Component {
 
   render() {
 
-    return(
-      <div className="YouTubeData">
-        <button onClick={this.FetchData}>Fetch Data</button>
-      </div>
-    );
-
+    if (this.state.Loading === true) {
+      return(
+        <div className="YouTubeData">
+          Loading...
+        </div>
+      )
+    } else {
+      return(
+        <div className="YouTubeData">
+          <button onClick={this.FetchData}>Fetch Data</button>
+        </div>
+      );
+    }
   }
 }
 

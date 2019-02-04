@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 import YouTubeAuth from './auth/YouTubeAuth';
 import YouTubeData from './data/YouTubeData';
+import Plot from './plot/Plot.js';
 
 var Auth;
 var Data;
+var Graph;
 
 class Social extends Component {
   constructor(props) {
@@ -25,28 +27,33 @@ class Social extends Component {
     if (this.props.user.jwt === undefined) {
       Auth = "^ Please login above ^";
       Data = "";
+      Graph = "";
     } else {
       if (this.props.target === "YouTube") {
         Auth = <YouTubeAuth user={this.props.user} authorised={this.state.authorised} Authorise={this.Authorise}/>;
         Data = <YouTubeData user={this.props.user}/>;
+        Graph = <Plot user={this.props.user} target={this.props.target}/>;
       } else {
         Auth = "DEV ISSUE: Please supply a configured target";
+        Data="";
+        Graph="";
       }
     }
     if (this.state.authorised === false) {
       Data = "";
+      Graph = "";
     }
 
     return(
       <div className="Social">
         <h2>{this.props.target}</h2>
+        {Graph}
         {Data}
         {Auth}
       </div>
     );
 
   }
-
 }
 
 export default Social;

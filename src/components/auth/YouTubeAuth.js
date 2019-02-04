@@ -110,7 +110,7 @@ class YouTubeAuth extends Component {
       default:
         return(
           <div>
-          <button onClick={this.logout}>Logout</button>
+            <button onClick={this.logout}>Logout</button>
           </div>
         )
     }
