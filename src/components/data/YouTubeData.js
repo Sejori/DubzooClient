@@ -4,11 +4,6 @@ import axios from 'axios';
 const keys = require('../../config/keys');
 
 class YouTubeData extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { Loading: false }
-  }
 
   FetchData = async() => {
     // get YT credentials from db
@@ -124,20 +119,11 @@ class YouTubeData extends Component {
   }
 
   render() {
-
-    if (this.state.Loading === true) {
-      return(
-        <div className="YouTubeData">
-          Loading...
-        </div>
-      )
-    } else {
-      return(
-        <div className="YouTubeData">
-          <button onClick={this.FetchData}>Fetch Data</button>
-        </div>
-      );
-    }
+    return(
+      <div className="YouTubeData">
+        <button onClick={this.FetchData}>Fetch Data</button>
+      </div>
+    );
   }
 }
 

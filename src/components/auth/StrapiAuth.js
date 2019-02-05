@@ -110,7 +110,7 @@ class StrapiAuth extends Component {
       default:
         return(
           <div>
-            Hi {this.state.usernameInput}!
+            <p>Hi {this.state.usernameInput}!</p>
             <button onClick={this.Logout}>LOGOUT</button>
           </div>
         )

@@ -7,5 +7,6 @@ module.exports = {
   YOUTUBE_SCOPES: "https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly",
   // YOUTUBE_METRICS: "views, impressions, subscribers_gained, subscribers_lost, likes, dislikes, comments, shares, videos_added_to_playlists, average_view_duration_seconds",
   YOUTUBE_METRICS: 'views, subscribers_gained',
+  SOUNDCLOUD_URI: "https://www.soundcloud.com",
   STRAPI_URI: "http://localhost:1337"
 }

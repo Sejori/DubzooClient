@@ -4,31 +4,39 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-left: 10%;
-  padding-right: 10%;
+  margin: 0;
 }
 
-h2 {
-  margin: 10px;
+h1 {
+  margin: 0px;
+}
+
+p {
+  margin: 0px;
 }
 
 .header {
-  list-style-type: none;
-  text-align: center;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  background-color: whitesmoke;
 }
 
-.logo {
-  height: 150px;
+.footer {
+  display: flex;
+  justify-content: center;
+  background-color: whitesmoke;
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
 .socials {
-  list-style-type: none;
+  display: flex;
+  justify-content: center;
   text-align: center;
   padding: 0;
-}
-
-.socials li {
-  display: inline-block;
 }
 
 .Social {
@@ -36,8 +44,12 @@ h2 {
   border: solid;
   border-width: 2px;
   border-color: grey;
-  padding: 20px;
+  padding: 10px;
   margin: 10px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .Data {

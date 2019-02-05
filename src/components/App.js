@@ -23,13 +23,19 @@ class App extends Component {
   render() {
     return (
       <div>
+        <div className="header">
+          <h1>DUBZOO</h1>
+          <StrapiAuth UpdateUser={this.UpdateUser} user={this.state.user}/>
+        </div>
 
-        <h1>DUBZOO</h1>
-        <StrapiAuth UpdateUser={this.UpdateUser} user={this.state.user}/>
+        <div className="socials">
+          <Social user={this.state.user} target="YouTube"/>
+          <Social user={this.state.user} target="Soundcloud"/>
+        </div>
 
-        <ul className="socials">
-          <li><Social user={this.state.user} target="YouTube"/></li>
-        </ul>
+        <div className="footer">
+          <a href="https://www.dubzoo.io/privacy-policy">Privacy Policy</a>
+        </div>
 
       </div>
     );

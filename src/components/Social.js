@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import YouTubeAuth from './auth/YouTubeAuth';
 import YouTubeData from './data/YouTubeData';
+import SoundcloudAuth from './auth/SoundcloudAuth';
+import SoundcloudData from './data/SoundcloudData';
 import Plot from './plot/Plot.js';
 
 var Auth;
@@ -13,33 +15,26 @@ class Social extends Component {
     super(props);
 
     this.state = {
-      loggedIn: false,
-      authorised: false
+      loggedIn: false
     }
-  }
-
-  Authorise = () => {
-    this.setState({ authorised: !this.state.authorised })
   }
 
   render() {
 
+    if (this.props.target === "YouTube") {
+      Auth = <YouTubeAuth user={this.props.user}/>;
+      Data = <YouTubeData user={this.props.user}/>;
+      Graph = <Plot user={this.props.user} target={this.props.target}/>;
+    }
+
+    if (this.props.target === "Soundcloud") {
+      Auth = <SoundcloudAuth user={this.props.user}/>;
+      Data = <SoundcloudData user={this.props.user}/>;
+      Graph = <Plot user={this.props.user} target={this.props.target}/>;
+    }
+
     if (this.props.user.jwt === undefined) {
       Auth = "^ Please login above ^";
-      Data = "";
-      Graph = "";
-    } else {
-      if (this.props.target === "YouTube") {
-        Auth = <YouTubeAuth user={this.props.user} authorised={this.state.authorised} Authorise={this.Authorise}/>;
-        Data = <YouTubeData user={this.props.user}/>;
-        Graph = <Plot user={this.props.user} target={this.props.target}/>;
-      } else {
-        Auth = "DEV ISSUE: Please supply a configured target";
-        Data="";
-        Graph="";
-      }
-    }
-    if (this.state.authorised === false) {
       Data = "";
       Graph = "";
     }
@@ -47,9 +42,11 @@ class Social extends Component {
     return(
       <div className="Social">
         <h2>{this.props.target}</h2>
-        {Graph}
-        {Data}
-        {Auth}
+        <div className="Social-content">
+          {Graph}
+          {Data}
+          {Auth}
+        </div>
       </div>
     );
 

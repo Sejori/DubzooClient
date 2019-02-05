@@ -3,16 +3,21 @@ import { GoogleLogin } from 'react-google-login';
 
 const keys = require('../../config/keys');
 
+var accountId;
+
 class YouTubeAuth extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = { authorised: false }
+  }
+
+  Authorise = () => {
+    this.setState({ authorised: !this.state.authorised })
+  }
 
   componentDidMount = () => {
     this.checkCredentials();
-  }
-
-  componentDidUpdate = (prevProps) => {
-    if (this.props.authorised !== prevProps.authorised) {
-      this.render();
-    }
   }
 
   checkCredentials = async() => {
@@ -29,41 +34,32 @@ class YouTubeAuth extends Component {
   }
 
   isTokenValid = (response) => {
-    if (response.youtubeaccount == null) {
+    if (response.youtubeaccount === null) {
       return;
     } else {
-      if (response.youtubeaccount.tokenObj.access_token != null) {
-        this.setYouTubeAccountId(response);
-        this.props.Authorise();
+      accountId = response.youtubeaccount._id;
+      if (response.youtubeaccount.tokenObj.access_token !== null) {
+        if (response.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
+          this.logout();
+          alert("Uh-oh. Your YouTube access has expired, please sign-in again :)")
+        } else {
+          this.Authorise();
+        }
       }
-      if (response.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
-        this.logout();
-        alert("Uh-oh. Your access has expired, please sign-in again :)")
-      }
-    }
-  }
-
-  setYouTubeAccountId = (response) => {
-    if (response.youtubeaccount != null) {
-      this.setState({ youtubeaccountId: response.youtubeaccount._id })
     }
   }
 
   logout = () => {
     // Retrieve credentials from database
-    fetch(keys.STRAPI_URI + '/youtubeaccounts/' + this.state.youtubeaccountId, {
+    fetch(keys.STRAPI_URI + '/youtubeaccounts/' + accountId, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + this.props.user.jwt
       },
     })
-    this.props.Authorise();
+    this.Authorise();
   }
-
-  onFailure = (error) => {
-    console.log(error);
-  };
 
   googleResponse = async(response) => {
 
@@ -89,8 +85,12 @@ class YouTubeAuth extends Component {
     this.checkCredentials();
   }
 
+  onFailure = (error) => {
+    console.log(error);
+  };
+
   render() {
-    switch (this.props.authorised) {
+    switch (this.state.authorised) {
       case false:
         return(
           <div className="YouTubeAuth">
@@ -110,7 +110,7 @@ class YouTubeAuth extends Component {
       default:
         return(
           <div>
-            <button onClick={this.logout}>Logout</button>
+            <button onClick={this.logout()}>Logout</button>
           </div>
         )
     }

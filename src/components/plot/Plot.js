@@ -40,7 +40,9 @@ class Plot extends Component {
   render() {
     return(
       <div>
-        {this.state.data}
+        <div>
+          {this.state.data}
+        </div>
         <button onClick={this.GetData}>Plot Data</button>
       </div>
     )
