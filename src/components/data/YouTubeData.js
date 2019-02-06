@@ -1,3 +1,10 @@
+//                          YOUTUBE API CALLER
+//
+// FetchData function gets YouTube account credentials from strapi backend then
+// calls the Youtube Analytics API for that account. The MakeArray function then
+// jiggles the response into an array. Update data then PUTs that into the
+// youtubeaccount's data field in Strapi.
+
 import React, { Component } from 'react';
 import axios from 'axios';
 
@@ -20,9 +27,9 @@ class YouTubeData extends Component {
     } else {
       if (appJson.youtubeaccount.tokenObj.access_token != null) {
         var accessToken = appJson.youtubeaccount.tokenObj.access_token;
-      }
-      if (appJson.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
-        alert("Something went wrong when fetching your data.")
+        if (appJson.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
+          alert("Something went wrong when fetching your data.")
+        }
       }
     }
 
@@ -46,35 +53,24 @@ class YouTubeData extends Component {
     let monthAgo = yyyyPast+'-'+mmPast+'-'+ddPast;
 
     // Request data from youtube
-    axios.get(keys.YOUTUBE_ANALYTICS_URI,
-      {
-        headers: {
-        //  "Access-Control-Allow-Origin": 'true',
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + accessToken,
-        },
-        params: {
-          "ids": 'channel==MINE',
-          "accessToken": accessToken,
-          "scope": keys.YOUTUBE_SCOPES,
-          "endDate": today,
-          "startDate": monthAgo,
-          "metrics": 'views,likes,comments,shares,subscribersGained,subscribersLost,averageViewDuration,videosAddedToPlaylists',
-          "dimensions": 'day',
-          "sort": 'day',
-          "key": keys.GOOGLE_API_KEY
-        },
+    const response = await axios.get(keys.YOUTUBE_ANALYTICS_URI, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + accessToken,
+      },
+      params: {
+        "ids": 'channel==MINE',
+        "scope": keys.YOUTUBE_SCOPES,
+        "endDate": today,
+        "startDate": monthAgo,
+        "metrics": 'views,likes,comments,shares,subscribersGained,subscribersLost,averageViewDuration,videosAddedToPlaylists',
+        "dimensions": 'day',
+        "sort": 'day',
+        "key": keys.GOOGLE_API_KEY
       }
-    )
-    .then(response => {
-      this.setState({ Loading: true })
-      while (response === null) {
-        //
-      }
-      this.setState({ Loading: false })
-      let data = this.MakeArray(response);
-      this.UpdateData(data);
     })
+    let data = this.MakeArray(response);
+    this.UpdateData(data);
   }
 
   MakeArray = (response) => {
@@ -92,7 +88,7 @@ class YouTubeData extends Component {
 
   UpdateData = async(data) => {
 
-    // Get users youtube account from db
+    // Retrieve credentials from database
     const response = await fetch(keys.STRAPI_URI + '/users/me', {
       method: "GET",
       headers: {
@@ -100,7 +96,7 @@ class YouTubeData extends Component {
         "Authorization": "Bearer " + this.props.user.jwt
       },
     })
-    const json = await response.json();
+    let json = await response.json();
 
     // send data to youtube account from db
     fetch(keys.STRAPI_URI + '/youtubeaccounts/' + json.youtubeaccount._id, {

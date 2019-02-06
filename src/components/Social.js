@@ -1,3 +1,7 @@
+//                        SOCIAL BLOCK
+//
+// Loads correct components into block based off target defined in App.js
+
 import React, { Component } from 'react';
 
 import YouTubeAuth from './auth/YouTubeAuth';
@@ -11,13 +15,6 @@ var Data;
 var Graph;
 
 class Social extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loggedIn: false
-    }
-  }
 
   render() {
 

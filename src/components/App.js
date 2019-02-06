@@ -1,3 +1,8 @@
+//                            APP COMPONENT
+//
+// Containts user credentials as state and UpdateUser function to be passed to
+// components.
+
 import React, { Component } from 'react';
 import Social from './Social';
 import StrapiAuth from './auth/StrapiAuth';

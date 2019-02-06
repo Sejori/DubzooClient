@@ -1,3 +1,14 @@
+//          AUTHORISATION AUTHORISATION AND STORAGE OF CREDENTIALS
+//
+// This component first checks to see if the Dubzoo user has YouTube
+// credentials stored. If so it changes the authorised state. If not authorised
+// the google login button is visible (only auth needed for scraping).
+//
+// The google login component comes from react-google-login and handles the
+// Oauth flow. The googleResponse function then sends the credentials to the
+// Strapi backend and changes the authorised state.
+// Logout removes the credentials from the backend and changes authorised state.
+
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 
@@ -41,6 +52,7 @@ class YouTubeAuth extends Component {
       if (response.youtubeaccount.tokenObj.access_token !== null) {
         if (response.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
           this.logout();
+          this.Authorise();
           alert("Uh-oh. Your YouTube access has expired, please sign-in again :)")
         } else {
           this.Authorise();
@@ -110,7 +122,7 @@ class YouTubeAuth extends Component {
       default:
         return(
           <div>
-            <button onClick={this.logout()}>Logout</button>
+            <button onClick={this.logout}>Logout</button>
           </div>
         )
     }

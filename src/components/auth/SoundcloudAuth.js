@@ -1,3 +1,13 @@
+//          SOUNDCLOUD AUTHORISATION AND STORAGE OF CREDENTIALS
+//
+// This component first checks to see if the Dubzoo user has Soundcloud
+// credentials stored. If so it changes the authorised state. If not authorised
+// there is an input field for username (only auth needed for scraping).
+//
+// The login function sends this username to the Strapi backend to create a new
+// Soundcloudaccount entry in the db and changes the authorised state. Logout
+// removes the username from the backend and changes authorised state.
+
 import React, { Component } from 'react';
 
 const keys = require('../../config/keys');
@@ -33,7 +43,7 @@ class SoundcloudAuth extends Component {
     })
     const json = await response.json();
 
-    if (json.soundcloudaccount !== undefined) {
+    if (json.soundcloudaccount !== null) {
       this.Authorise();
       accountId = json.soundcloudaccount._id;
     }
@@ -62,7 +72,7 @@ class SoundcloudAuth extends Component {
 
   Logout = () => {
     // Retrieve credentials from database
-    fetch(keys.STRAPI_URI + '/youtubeaccounts/' + accountId, {
+    fetch(keys.STRAPI_URI + '/soundcloudaccounts/' + accountId, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

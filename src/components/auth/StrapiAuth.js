@@ -1,3 +1,10 @@
+//          STRAPI AUTHORISATION AND STORAGE OF CREDENTIALS
+//
+// Nice simple one (will get more complex if/when we Oauth this though). 
+// The login function sends the username and password to the Strapi backend
+// and changes the authorised state. Logout removes the username from the
+// backend and changes authorised state.
+
 import React, { Component } from 'react';
 import axios from 'axios';
 

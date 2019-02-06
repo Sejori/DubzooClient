@@ -1,3 +1,10 @@
+//                PLOTS DATA FROM USER'S SOCIAL ACCOUNTS IN DB
+//
+//  GetData gets user info from STRAPI
+//  PrintData uses target in props to specify what data to show and assigns
+// the data to state.
+// Render is just showing state + button for now.
+
 import React, { Component } from 'react';
 import keys from '../../config/keys.js'
 
@@ -18,22 +25,20 @@ class Plot extends Component {
       },
     })
     const json = await response.json();
-    console.log(json);
     this.PrintData(json);
-
   }
 
   PrintData = (json) => {
-    if (this.props.target === "YouTube") {
-      if (json.youtubeaccount === undefined) {
-        alert("You haven't linked a " + this.props.target + " account yet.")
-        return;
-      } else if (json.youtubeaccount.data === undefined) {
-        alert("You haven't retrieved any " + this.props.target + " data yet.")
-        return;
-      } else {
-        this.setState({ data: json.youtubeaccount.data })
-      }
+    let social = this.props.target.toLowerCase() + 'account';
+
+    if (json[social] === undefined) {
+      alert("You haven't linked a " + this.props.target + " account yet.")
+      return;
+    } else if (json[social].data === undefined) {
+      alert("You haven't retrieved any " + this.props.target + " data yet.")
+      return;
+    } else {
+      this.setState({ data: json[social].data })
     }
   }
 
