@@ -8,6 +8,7 @@ import YouTubeAuth from './auth/YouTubeAuth';
 import YouTubeData from './data/YouTubeData';
 import SoundcloudAuth from './auth/SoundcloudAuth';
 import SoundcloudData from './data/SoundcloudData';
+import InstagramAuth from './auth/InstagramAuth';
 import Plot from './plot/Plot.js';
 
 var Auth;
@@ -26,6 +27,12 @@ class Social extends Component {
 
     if (this.props.target === "Soundcloud") {
       Auth = <SoundcloudAuth user={this.props.user}/>;
+      Data = <SoundcloudData user={this.props.user}/>;
+      Graph = <Plot user={this.props.user} target={this.props.target}/>;
+    }
+
+    if (this.props.target === "Instagram") {
+      Auth = <InstragramAuth user={this.props.user}/>;
       Data = <SoundcloudData user={this.props.user}/>;
       Graph = <Plot user={this.props.user} target={this.props.target}/>;
     }

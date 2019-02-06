@@ -1,4 +1,4 @@
-//          AUTHORISATION AUTHORISATION AND STORAGE OF CREDENTIALS
+//            YOUTUBE AUTHORISATION AND STORAGE OF CREDENTIALS
 //
 // This component first checks to see if the Dubzoo user has YouTube
 // credentials stored. If so it changes the authorised state. If not authorised
