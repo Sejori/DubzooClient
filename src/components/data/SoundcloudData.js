@@ -94,7 +94,7 @@ class SoundcloudData extends Component {
     console.log(json)
 
     var data;
-    if (json.soundcloudaccount === null) {
+    if (json.soundcloudaccount.data === null) {
       data = entry;
     } else {
       data = this.MakeArray(entry, json.soundcloudaccount.data);

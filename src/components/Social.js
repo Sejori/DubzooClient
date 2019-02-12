@@ -32,7 +32,7 @@ class Social extends Component {
     }
 
     if (this.props.target === "Instagram") {
-      Auth = <InstragramAuth user={this.props.user}/>;
+      Auth = <InstagramAuth user={this.props.user}/>;
       Data = <SoundcloudData user={this.props.user}/>;
       Graph = <Plot user={this.props.user} target={this.props.target}/>;
     }
