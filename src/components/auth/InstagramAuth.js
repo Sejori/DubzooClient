@@ -6,8 +6,6 @@ import React, { Component } from 'react';
 
 const keys = require('../../config/keys');
 
-var accountId;
-
 class InstagramAuth extends Component {
   constructor(props) {
     super(props)
@@ -56,9 +54,18 @@ class InstagramAuth extends Component {
     // }
   }
 
-  logout = () => {
+  Logout = async() => {
     // Retrieve credentials from database
-    fetch(keys.STRAPI_URI + '/instagramaccounts/' + accountId, {
+    const response = await fetch(keys.STRAPI_URI + '/users/me', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + this.props.user.jwt
+      },
+    })
+    const json = await response.json();
+
+    fetch(keys.STRAPI_URI + '/instagramaccounts/' + json.instagramaccount._id, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +80,7 @@ class InstagramAuth extends Component {
       case false:
         return(
           <div className="InstagramAuth">
-            // put login button here
+            Put login button here
           </div>
         )
 

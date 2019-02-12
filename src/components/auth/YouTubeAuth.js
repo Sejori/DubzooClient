@@ -14,8 +14,6 @@ import { GoogleLogin } from 'react-google-login';
 
 const keys = require('../../config/keys');
 
-var accountId;
-
 class YouTubeAuth extends Component {
   constructor(props) {
     super(props)
@@ -48,11 +46,9 @@ class YouTubeAuth extends Component {
     if (response.youtubeaccount === null) {
       return;
     } else {
-      accountId = response.youtubeaccount._id;
       if (response.youtubeaccount.tokenObj.access_token !== null) {
         if (response.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
           this.logout();
-          this.Authorise();
           alert("Uh-oh. Your YouTube access has expired, please sign-in again :)")
         } else {
           this.Authorise();
@@ -61,9 +57,18 @@ class YouTubeAuth extends Component {
     }
   }
 
-  logout = () => {
+  logout = async() => {
     // Retrieve credentials from database
-    fetch(keys.STRAPI_URI + '/youtubeaccounts/' + accountId, {
+    const response = await fetch(keys.STRAPI_URI + '/users/me', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + this.props.user.jwt
+      },
+    })
+    const json = await response.json();
+
+    fetch(keys.STRAPI_URI + '/youtubeaccounts/' + json.youtubeaccount._id, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

@@ -12,8 +12,6 @@ import React, { Component } from 'react';
 
 const keys = require('../../config/keys');
 
-var accountId;
-
 class SoundcloudAuth extends Component {
   constructor(props) {
     super(props);
@@ -45,7 +43,6 @@ class SoundcloudAuth extends Component {
 
     if (json.soundcloudaccount !== null) {
       this.Authorise();
-      accountId = json.soundcloudaccount._id;
     }
   }
 
@@ -70,9 +67,18 @@ class SoundcloudAuth extends Component {
     this.Authorise();
   }
 
-  Logout = () => {
+  Logout = async() => {
     // Retrieve credentials from database
-    fetch(keys.STRAPI_URI + '/soundcloudaccounts/' + accountId, {
+    const response = await fetch(keys.STRAPI_URI + '/users/me', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + this.props.user.jwt
+      },
+    })
+    const json = await response.json();
+
+    fetch(keys.STRAPI_URI + '/soundcloudaccounts/' + json.soundcloudaccount._id, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

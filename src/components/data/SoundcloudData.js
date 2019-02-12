@@ -11,6 +11,7 @@ const keys = require('../../config/keys');
 class SoundcloudData extends Component {
 
   FetchData = async() => {
+
     // get soundcloud credentials from db
     const appResponse = await fetch(keys.STRAPI_URI + '/users/me', {
       method: "GET",
@@ -21,7 +22,8 @@ class SoundcloudData extends Component {
     })
     const appJson = await appResponse.json();
     if (appJson.soundcloudaccount === null) {
-      alert("Something went wrong fetching your data.")
+      alert("Please login to your Soundcloud account first.")
+      return;
     } else {
       if (appJson.soundcloudaccount.tokenObj.access_token !== null) {
         if (appJson.soundcloudaccount.tokenObj.expires_at < new Date().getTime()) {
@@ -30,14 +32,44 @@ class SoundcloudData extends Component {
       }
     }
 
-    // Do soundcloud GET for users profile page
-    const socialResponse = await fetch('https://cors-anywhere.herokuapp.com/' + keys.SOUNDCLOUD_URI + '/' + appJson.soundcloudaccount.channelName)
-    const socialHTML = await socialResponse.text();
+    // Soundcloud API GET user & tracks
+    const socialResponse = await fetch('https://cors-anywhere.herokuapp.com/' + keys.SOUNDCLOUD_URI + '/users/' + appJson.soundcloudaccount.channelName + '?client_id=' + keys.SOUNDCLOUD_CLIENT_ID)
+    const socialJSON = await socialResponse.json();
 
-    // Scrape followers number
-    let followersStartIndex = socialHTML.search('soundcloud:follower_count') + 36;
-    let followersEndIndex = socialHTML.search('<link rel="canonical"') - 5;
-    let followers = socialHTML.substring(followersStartIndex, followersEndIndex);
+    // store metrics
+    let userSocialID = socialJSON.id;
+    let userSocialFollowers = socialJSON.followers_count;
+    console.log(userSocialID, userSocialFollowers);
+
+    // Soundcloud API GET tracks
+    const tracksResponse = await fetch('https://cors-anywhere.herokuapp.com/' + keys.SOUNDCLOUD_URI + '/users/' + userSocialID + '/tracks?client_id=' + keys.SOUNDCLOUD_CLIENT_ID)
+    const tracksJSON = await tracksResponse.json();
+    console.log(tracksJSON)
+
+
+    // stat totalling logic
+    let commentCount = [];
+    let downloadCount = [];
+    let favouriteCount = [];
+    let playbackCount = [];
+    let repostCount = [];
+
+    tracksJSON.map((currElement, index) => {
+      commentCount[index] = currElement.comment_count;
+      downloadCount[index] = currElement.download_count;
+      favouriteCount[index] = currElement.favoritings_count;
+      playbackCount[index] = currElement.playback_count;
+      repostCount[index] = currElement.reposts_count;
+      return 'X';
+    });
+
+    commentCount = commentCount.reduce((a,b) => a + b, 0)
+    downloadCount = downloadCount.reduce((a,b) => a + b, 0)
+    favouriteCount = favouriteCount.reduce((a,b) => a + b, 0)
+    playbackCount = playbackCount.reduce((a,b) => a + b, 0)
+    repostCount = repostCount.reduce((a,b) => a + b, 0)
+
+    console.log("Comments: " + commentCount, "Downloads: " + downloadCount, "Favourites: " + favouriteCount, "Plays: " + playbackCount, "Reposts: " + repostCount)
 
     // Get date
     // getting current date
@@ -53,7 +85,11 @@ class SoundcloudData extends Component {
 
     let entry = [
       date,
-      followers
+      commentCount,
+      downloadCount,
+      favouriteCount,
+      playbackCount,
+      repostCount
     ]
     this.UpdateData(entry);
 
@@ -66,13 +102,17 @@ class SoundcloudData extends Component {
     if (data === "") {
       data = [
         [
-          "day",
-          "followers"
+          "date",
+          "comments",
+          "downloads",
+          "favourites",
+          "playbacks",
+          "reposts"
         ]
       ];
     }
     let lastEntry = data.pop()
-    if (lastEntry[1] !== entry[1]) {
+    if (lastEntry[0] !== entry[0]) {
       data.push(lastEntry);
     }
     data.push(entry);
