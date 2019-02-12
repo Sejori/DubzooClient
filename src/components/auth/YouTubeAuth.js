@@ -43,11 +43,12 @@ class YouTubeAuth extends Component {
   }
 
   isTokenValid = (response) => {
-    if (response.youtubeaccount === null) {
+    if (response.youtubeaccount == null) {
       return;
     } else {
       if (response.youtubeaccount.tokenObj.access_token !== null) {
         if (response.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
+          this.Authorise();
           this.logout();
           alert("Uh-oh. Your YouTube access has expired, please sign-in again :)")
         } else {

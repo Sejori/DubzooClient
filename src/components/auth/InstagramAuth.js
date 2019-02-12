@@ -18,10 +18,10 @@ class InstagramAuth extends Component {
   }
 
   componentDidMount = () => {
-    this.checkCredentials();
+    this.CheckCredentials();
   }
 
-  checkCredentials = async() => {
+  CheckCredentials = async() => {
     // Retrieve credentials from database
     const response = await fetch(keys.STRAPI_URI + '/users/me', {
       method: "GET",
@@ -31,27 +31,39 @@ class InstagramAuth extends Component {
       },
     })
     const json = await response.json();
-    this.isTokenValid(json)
+    this.IsTokenValid(json)
   }
 
-  isTokenValid = (response) => {
+  IsTokenValid = (response) => {
 
-    // CHANGE!
+    if (response.instagramaccount == null) {
+      return;
+    } else {
+      if (response.instagramaccount.tokenObj.access_token !== null) {
+        if (response.instagramaccount.tokenObj.expires_at < new Date().getTime()) {
+          this.Authorise();
+          this.Logout();
+          alert("Uh-oh. Your Instagram access has expired, please sign-in again :)")
+        } else {
+          this.Authorise();
+        }
+      }
+    }
+  }
 
-    // if (response.youtubeaccount === null) {
-    //   return;
-    // } else {
-    //   accountId = response.youtubeaccount._id;
-    //   if (response.youtubeaccount.tokenObj.access_token !== null) {
-    //     if (response.youtubeaccount.tokenObj.expires_at < new Date().getTime()) {
-    //       this.logout();
-    //       this.Authorise();
-    //       alert("Uh-oh. Your YouTube access has expired, please sign-in again :)")
-    //     } else {
-    //       this.Authorise();
-    //     }
-    //   }
-    // }
+  Login = () => {
+    // open Oauth pop-up
+    let authPopup = window.open(keys.INSTAGRAM_URI + '/oauth/authorize/?client_id=' + keys.INSTAGRAM_CLIENT_ID + '&redirect_uri=' + keys.HOST_URI + '&response_type=token', "authPopup", 'width=800,height=600')
+    authPopup.focus()
+    let popupURI = '';
+
+    authPopup.onbeforeunload = function(popupURI) {
+      popupURI = authPopup.location.href;
+      return(popupURI)
+    };
+
+    console.log(popupURI)
+
   }
 
   Logout = async() => {
@@ -80,14 +92,14 @@ class InstagramAuth extends Component {
       case false:
         return(
           <div className="InstagramAuth">
-            Put login button here
+            <button onClick={this.Login}>Login</button>
           </div>
         )
 
       default:
         return(
           <div>
-            <button onClick={this.logout}>Logout</button>
+            <button onClick={this.Logout}>Logout</button>
           </div>
         )
     }

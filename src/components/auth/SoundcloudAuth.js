@@ -27,10 +27,10 @@ class SoundcloudAuth extends Component {
   }
 
   componentDidMount = () => {
-    this.checkCredentials();
+    this.CheckCredentials();
   }
 
-  checkCredentials = async() => {
+  CheckCredentials = async() => {
     // Retrieve credentials from database
     const response = await fetch(keys.STRAPI_URI + '/users/me', {
       method: "GET",
