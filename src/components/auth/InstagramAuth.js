@@ -53,16 +53,42 @@ class InstagramAuth extends Component {
 
   Login = () => {
     // open Oauth pop-up
-    let authPopup = window.open(keys.INSTAGRAM_URI + '/oauth/authorize/?client_id=' + keys.INSTAGRAM_CLIENT_ID + '&redirect_uri=' + keys.HOST_URI + '&response_type=token', "authPopup", 'width=800,height=600')
-    authPopup.focus()
-    let popupURI = '';
+    let authURI = keys.INSTAGRAM_URI + '/oauth/authorize/?client_id=' + keys.INSTAGRAM_CLIENT_ID + '&redirect_uri=' + keys.HOST_URI + '&response_type=token';
+    let popupURI = "";
+    let authPopup = window.open(authURI, "authPopup", 'width=800,height=600')
 
-    authPopup.onbeforeunload = function(popupURI) {
+    // wait for redirect from auth popup
+    var checkInterval = setInterval(() => {
       popupURI = authPopup.location.href;
-      return(popupURI)
-    };
 
-    console.log(popupURI)
+      if (popupURI.substr(0,6) === window.location.href.substr(0,6)) {
+        clearInterval(checkInterval);
+
+        // retrieving access token from URI + building tokenObj
+        let accessTokenIndex = popupURI.search("=");
+        let access_token = popupURI.slice(accessTokenIndex + 1);
+        let expires_at = new Date().getTime() + 3600000;
+        let tokenObj = {
+          "access_token": access_token,
+          "expires_at": expires_at
+        }
+
+        // POST ACCESS TOKEN TO DB
+        fetch(keys.STRAPI_URI + '/instagramaccounts', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + this.props.user.jwt
+          },
+          body: JSON.stringify({
+            "tokenObj": tokenObj,
+            "user": this.props.user.userID
+          })
+        })
+        authPopup.close();
+        this.Authorise();
+      }
+    }, 500);
 
   }
 
