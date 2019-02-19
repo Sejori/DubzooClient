@@ -1,7 +1,7 @@
-//                          SOUNDCLOUD SCRAPER
+//                          SOUNDCLOUD NO-LONGER-SCRAPER
 //
 // FetchData function gets soundcloud account id from strapi backend then
-// scrapes the Soundlcoud page for that profile. The MakeArray function then
+// does API calls for user info. The MakeArray function then
 // adds new data to existing data in the db UpdateData sends it back to Strapi.
 
 import React, { Component } from 'react';

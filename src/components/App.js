@@ -37,6 +37,7 @@ class App extends Component {
           <Social user={this.state.user} target="YouTube"/>
           <Social user={this.state.user} target="Soundcloud"/>
           <Social user={this.state.user} target="Instagram"/>
+          <Social user={this.state.user} target="Twitter"/>
         </div>
 
         <div className="footer">

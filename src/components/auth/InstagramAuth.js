@@ -53,7 +53,7 @@ class InstagramAuth extends Component {
 
   Login = () => {
     // open Oauth pop-up
-    let authURI = keys.INSTAGRAM_URI + '/oauth/authorize/?client_id=' + keys.INSTAGRAM_CLIENT_ID + '&redirect_uri=' + keys.HOST_URI + '&response_type=token';
+    let authURI = keys.INSTAGRAM_AUTH_URI + '/oauth/authorize/?client_id=' + keys.INSTAGRAM_CLIENT_ID + '&redirect_uri=' + keys.HOST_URI + '&response_type=token';
     let popupURI = "";
     let authPopup = window.open(authURI, "authPopup", 'width=800,height=600')
 

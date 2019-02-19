@@ -5,12 +5,14 @@ module.exports = {
   GOOGLE_API_KEY: "AIzaSyCaP5sa-mc5m0IHIXMSltkZpEkzdGZX7vE",
   HOST_URI: "http://localhost:3000",
   INSTAGRAM_CLIENT_ID: "bff1e5afa3b04390875c4956b38a7feb",
-  INSTAGRAM_URI: "https://api.instagram.com",
+  INSTAGRAM_AUTH_URI: "https://api.instagram.com",
+  INSTAGRAM_USER_URI: "https://api.instagram.com/v1/users/self/?access_token=",
+  INSTAGRAM_MEDIA_URI: "https://api.instagram.com/v1/users/self/media/recent/?access_token=",
   YOUTUBE_ANALYTICS_URI: "https://youtubeanalytics.googleapis.com/v2/reports",
   YOUTUBE_SCOPES: "https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly",
-  // YOUTUBE_METRICS: "views, impressions, subscribers_gained, subscribers_lost, likes, dislikes, comments, shares, videos_added_to_playlists, average_view_duration_seconds",
   YOUTUBE_METRICS: "views, subscribers_gained",
   SOUNDCLOUD_URI: "http://api.soundcloud.com",
   SOUNDCLOUD_CLIENT_ID: "22c93b81ed33242900cb6071634df845",
-  STRAPI_URI: "http://localhost:1337"
+  STRAPI_URI: "http://localhost:1337",
+  TWITTER_URI: 'https://www.twitter.com'
 }
