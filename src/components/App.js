@@ -4,7 +4,7 @@
 // components.
 
 import React, { Component } from 'react';
-import Social from './Social';
+import Social from './socials/Social';
 import StrapiAuth from './auth/StrapiAuth';
 
 class App extends Component {
