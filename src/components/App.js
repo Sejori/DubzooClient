@@ -3,9 +3,11 @@
 // Containts user credentials as state and UpdateUser function to be passed to
 // components.
 
-import React, { Component } from 'react';
-import Social from './socials/Social';
-import StrapiAuth from './auth/StrapiAuth';
+import React, { Component } from 'react'
+import StrapiAuth from './auth/StrapiAuth'
+import SocialList from './socials/SocialList'
+import ArtistList from './artists/ArtistList'
+import ArtistEdit from'./artists/ArtistEdit'
 
 class App extends Component {
   constructor(props) {
@@ -16,13 +18,18 @@ class App extends Component {
         userID: undefined,
         username: undefined,
         jwt: undefined
-      }
+      },
+      selectedArtist: [],
     }
   }
 
   UpdateUser = (userID, username, jwt) => {
-    let user = { userID, username, jwt };
-    this.setState({ user: user });
+    let user = { userID, username, jwt }
+    this.setState({ user: user })
+  }
+
+  SelectArtist = (artistID) => {
+    this.setState({ selectedArtist: artistID })
   }
 
   render() {
@@ -33,17 +40,19 @@ class App extends Component {
           <StrapiAuth UpdateUser={this.UpdateUser} user={this.state.user}/>
         </div>
 
-        <div className="socials">
-          <Social user={this.state.user} target="YouTube"/>
-          <Social user={this.state.user} target="Soundcloud"/>
-          <Social user={this.state.user} target="Instagram"/>
-          <Social user={this.state.user} target="Twitter"/>
+        <div className="app-main">
+          <div>
+            <ArtistList user={this.state.user} SelectArtist={this.SelectArtist}/>
+          </div>
+
+          <div className="social-list">
+            <SocialList user={this.state.user} artist={this.state.artist} />
+          </div>
         </div>
 
         <div className="footer">
           <a href="https://www.dubzoo.io/privacy-policy">Privacy Policy</a>
         </div>
-
       </div>
     );
   }

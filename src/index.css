@@ -1,56 +1,65 @@
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin: 0;
-}
-h1 { margin: 0px; }
-p { margin: 0px; }
+body { width: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; margin: 0; width: device-width; }
+h1 { font-size: 5vw; margin: 0px; }
+p { margin: 0px; font-size: 12px; }
 
 .header {
-  padding: 1em;
+  padding: 10px;
   display: flex;
   justify-content: space-between;
+  text-align: left;
+  align-items: center;
   background-color: whitesmoke;
-  padding-left: 50px;
-  padding-right: 50px;
+}
+
+.app-main {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100vw;
+}
+
+.artist-list {
+  margin: 20px;
+  margin-left: 15px;
+  display: flex;
+}
+
+.artist-list * {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.artist-block {
+  text-align: center;
+  display: inline-block;
+}
+
+.social-list {
+  margin: 10px;
+  margin-top: 30px;
+  padding: 10px;
+  border: solid 2px;
+  border-color: #000000;
+  border-radius: 20px;
+}
+
+.artist-edit-row {
+  width: 270px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
 }
 
 .footer {
   display: flex;
   justify-content: center;
   background-color: whitesmoke;
-  padding: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   position: fixed;
   bottom: 0;
   width: 100%;
-}
-
-.socials {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  text-align: center;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.Social {
-  border-radius: 10px;
-  border: solid;
-  border-width: 2px;
-  border-color: grey;
-  padding: 10px;
-  margin: 10px;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.Data {
-  padding: 20px;
 }
