@@ -7,7 +7,6 @@ import React, { Component } from 'react'
 import StrapiAuth from './auth/StrapiAuth'
 import SocialList from './socials/SocialList'
 import ArtistList from './artists/ArtistList'
-import ArtistEdit from'./artists/ArtistEdit'
 
 class App extends Component {
   constructor(props) {

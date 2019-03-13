@@ -4,7 +4,6 @@
 
 import React, { Component } from 'react'
 import Artist from './Artist'
-import ArtistEdit from './ArtistEdit'
 import keys from '../../config/keys'
 
 class ArtistList extends Component {
@@ -13,6 +12,7 @@ class ArtistList extends Component {
 
     this.state = {
       artists: [],
+      highlighted: [],
       editingArtist: null
     }
   }
@@ -35,17 +35,38 @@ class ArtistList extends Component {
     })
     const me = await response.json()
     const artists = await me.artists
-    this.setState({ artists: artists })
+
+    // call artist component for each artist
+    // let artists = array artist
+    let artistBlocks = artists.map( (item, index) =>
+      <Artist
+        highlighted={this.state.highlighted}
+        artist={ item }
+        SelectArtist={ () => this.SelectArtist(item._id) }
+        EditArtist={ () => this.EditArtist(item._id) }
+        DeleteArtist={ () => this.DeleteArtist(item._id) }
+        key={ item._id }
+        index={index} />
+    )
+    artistBlocks.push(<button onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button>)
+    this.setState({ artists: artistBlocks })
   }
 
   SelectArtist = (artistID) => {
     console.log("Select artist called for artist ID: ", artistID)
     this.props.SelectArtist(artistID)
+
+    // find array item matching artistID key then creare highlighted array
+    let index = this.state.artists.findIndex(x => x.key === artistID)
+    let arr = []
+    arr.length = this.state.artists.length
+    arr.fill(0)
+    arr[index] = 1
+    this.setState({ highlighted: arr })
   }
 
   EditArtist = (artistID) => {
     console.log("Edit artist called for artist ID: ", artistID)
-    this.setState({ editingArtist: artistID })
   }
 
   DeleteArtist = (artistID) => {
@@ -59,33 +80,16 @@ class ArtistList extends Component {
 
   render() {
     switch (this.props.user.jwt) {
-
-      case undefined:
-        return(
-          <div></div>
-        )
+      case undefined: return( <></> )
 
       default:
-        // call artist component for each artist
-        // let artists = array artist
-        let artistBlocks = this.state.artists.map(
-          (item, index) => <Artist
-            artist={ item }
-            SelectArtist={ () => this.SelectArtist(item._id) }
-            EditArtist={ () => this.EditArtist(item._id) }
-            DeleteArtist={ () => this.DeleteArtist(item._id) }
-            key={ item._id }/>
-        );
-        artistBlocks.push(<button onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button>)
-
         return(
           <div className="artists">
             <h4>Your artists</h4>
             <div className="artist-list">
-              {artistBlocks}
+              {this.state.artists}
             </div>
             <div className="artist-editor">
-              <ArtistEdit artistID={this.state.editingArtist}/>
             </div>
           </div>
         )

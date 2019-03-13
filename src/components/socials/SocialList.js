@@ -27,6 +27,7 @@ class SocialList extends Component {
         return(
           <div>
             <p>Social lists will appear here</p>
+            <Social />
           </div>
         )
     }

@@ -1,6 +1,7 @@
 body { width: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; margin: 0; width: device-width; }
 h1 { font-size: 5vw; margin: 0px; }
 p { margin: 0px; font-size: 12px; }
+.highlighted { background-color: skyblue; }
 
 .header {
   padding: 10px;
