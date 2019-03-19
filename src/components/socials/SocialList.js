@@ -7,10 +7,10 @@ import React, { Component } from 'react';
 import Social from './Social';
 
 class SocialList extends Component {
-  constructor(props) {
-    super(props)
-    // artist social accounts and data exist in artist prop from App.js
-  }
+  // constructor(props) {
+  //   super(props)
+  //   // artist social accounts and data exist in artist prop from App.js
+  // }
 
   render() {
     switch (this.props.user.jwt) {

@@ -182,7 +182,7 @@ class ArtistList extends Component {
     console.log("Delete artist called for artist ID: ", artistID)
     // create alert for are you sure
     var r = window.confirm("Are you sure? You will lose all data for this artist.")
-    if (r == true) {
+    if (r === true) {
       axios({
         method: 'delete', //you can set what request you want to be
         url: keys.STRAPI_URI + "/artists/" + artistID,
