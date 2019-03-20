@@ -19,6 +19,8 @@ class ArtistList extends Component {
       editingSoundcloudHandle: "",
       editingInstagramHandle: "",
       editingSpotifyHandle: "",
+      editingTwitterHandle: "",
+      editingFacebookHandle: "",
       editingID: ""
     }
 
@@ -40,6 +42,8 @@ class ArtistList extends Component {
       editingSoundcloudHandle: await artist.soundcloudHandle,
       editingInstagramHandle: await artist.instagramHandle,
       editingSpotifyHandle: await artist.spotifyHandle,
+      editingTwitterHandle: await artist.twitterHandle,
+      editingFacebookHandle: await artist.facebookHandle,
       editingID: await artist._id
     })
   }
@@ -102,6 +106,8 @@ class ArtistList extends Component {
           soundcloudHandle: this.state.editingSoundcloudHandle,
           instagramHandle: this.state.editingInstagramHandle,
           spotifyHandle: this.state.editingSpotifyHandle,
+          twitterHandle: this.state.editingTwitterHandle,
+          facebookHandle: this.state.editingFacebookHandle
         },
         headers: {
           Authorization: 'Bearer ' + this.props.user.jwt
@@ -131,6 +137,8 @@ class ArtistList extends Component {
           soundcloudHandle: this.state.editingSoundcloudHandle,
           instagramHandle: this.state.editingInstagramHandle,
           spotifyHandle: this.state.editingSpotifyHandle,
+          twitterHandle: this.state.editingTwitterHandle,
+          facebookHandle: this.state.editingFacebookHandle,
           user: this.props.user.userID
         },
         headers: {
@@ -155,26 +163,28 @@ class ArtistList extends Component {
     // Close edit box
     this.setState({
       editingArtist: null,
-      editingArtistFields: {
-        artistName: "",
-        youtubeHandle: "",
-        soundcloudHandle: "",
-        instagramHandle: "",
-        spotifyHandle: ""
-      }
+      editingArtistName: "",
+      editingYoutubeHandle: "",
+      editingSoundcloudHandle: "",
+      editingInstagramHandle: "",
+      editingSpotifyHandle: "",
+      editingTwitterHandle: "",
+      editingFacebookHandle: "",
+      editingID: ""
     })
   }
 
   CancelEdit = () => {
     this.setState({
       editingArtist: null,
-      editingArtistFields: {
-        artistName: "",
-        youtubeHandle: "",
-        soundcloudHandle: "",
-        instagramHandle: "",
-        spotifyHandle: ""
-      }
+      editingArtistName: "",
+      editingYoutubeHandle: "",
+      editingSoundcloudHandle: "",
+      editingInstagramHandle: "",
+      editingSpotifyHandle: "",
+      editingTwitterHandle: "",
+      editingFacebookHandle: "",
+      editingID: ""
     })
   }
 
@@ -217,6 +227,8 @@ class ArtistList extends Component {
       editingSoundcloudHandle: "",
       editingInstagramHandle: "",
       editingSpotifyHandle: "",
+      editingTwitterHandle: "",
+      editingFacebookHandle: "",
       editingID: ""
     })
   }
@@ -286,13 +298,33 @@ class ArtistList extends Component {
               name="editingSpotifyHandle"
               type="text"
               placeholder="Spotify account name"
-              value={this.state.SpotifyHandle}
+              value={this.state.editingSpotifyHandle}
               onChange={this.HandleEditChange}
             />
           </div>
           <div className="artist-edit-row">
-            <button onClick={this.SubmitEdit}>Submit</button>
+            <p>Twitter Account:</p>&nbsp;
+            <input
+              name="editingTwitterHandle"
+              type="text"
+              placeholder="Twitter account name"
+              value={this.state.editingTwitterHandle}
+              onChange={this.HandleEditChange}
+            />
+          </div>
+          <div className="artist-edit-row">
+            <p>Facebook Account:</p>&nbsp;
+            <input
+              name="editingFacebookHandle"
+              type="text"
+              placeholder="Facebook account name"
+              value={this.state.editingFacebookHandle}
+              onChange={this.HandleEditChange}
+            />
+          </div>
+          <div className="artist-edit-row">
             <button onClick={this.CancelEdit}>Cancel</button>
+            <button onClick={this.SubmitEdit}>Submit</button>
           </div>
         </div>
     }
