@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "chart.js": "^2.8.0",
     "npm": "^6.8.0",
     "react": "^16.6.3",
+    "react-chartjs-2": "^2.7.5",
     "react-dom": "^16.6.3",
     "react-google-login": "^4.0.1",
-    "react-scripts": "^2.1.5",
+    "react-scripts": "^2.1.8",
     "start": "^5.1.0"
   },
   "scripts": {

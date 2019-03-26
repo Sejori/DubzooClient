@@ -70,19 +70,19 @@ class ArtistList extends Component {
     let artistBlocks = artists.map( (item, index) =>
       <Artist
         artist={ item }
-        SelectArtist={ () => this.SelectArtist(item._id) }
+        SelectArtist={ () => this.SelectArtist(item) }
         EditArtist={ () => this.EditArtist(item._id) }
         DeleteArtist={ () => this.DeleteArtist(item._id) }
         key={ item._id }
         index={index} />
     )
-    artistBlocks.push(<button onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button>)
+    artistBlocks.push(<button className="btn btn-primary" onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button>)
     this.setState({ artists: artistBlocks })
   }
 
-  SelectArtist = (artistID) => {
-    console.log("Select artist called for artist ID: ", artistID)
-    this.props.SelectArtist(artistID)
+  SelectArtist = (artist) => {
+    console.log("Select artist called for artist ID: ", artist._id)
+    this.props.SelectArtist(artist)
   }
 
   EditArtist = (artistID) => {

@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react'
 import StrapiAuth from './auth/StrapiAuth'
-import SocialList from './socials/SocialList'
+import SocialList from './metrics/SocialList'
 import ArtistList from './artists/ArtistList'
 
 class App extends Component {
@@ -18,7 +18,7 @@ class App extends Component {
         username: undefined,
         jwt: undefined
       },
-      selectedArtist: [],
+      selectedArtist: {}
     }
   }
 
@@ -27,15 +27,14 @@ class App extends Component {
     this.setState({ user: user })
   }
 
-  SelectArtist = (artistID) => {
-    this.setState({ selectedArtist: artistID })
+  SelectArtist = (artist) => {
+    this.setState({ selectedArtist: artist })
   }
 
   render() {
 
-    var artistList
+    var artistList = ""
     if (this.state.user.jwt) artistList = <ArtistList user={this.state.user} UpdateUser={this.UpdateUser} SelectArtist={this.SelectArtist}/>
-    else artistList = ""
 
     return (
       <div>
@@ -50,7 +49,7 @@ class App extends Component {
           </div>
 
           <div className="social-list">
-            <SocialList user={this.state.user} artist={this.state.artist} />
+            <SocialList user={this.state.user} artist={this.state.selectedArtist} />
           </div>
         </div>
 
