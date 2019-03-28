@@ -1,4 +1,3 @@
-src/config/prod.js
 src/config/dev.js
 
 node_modules
