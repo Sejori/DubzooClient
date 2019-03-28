@@ -250,7 +250,7 @@ class ArtistList extends Component {
       }
 
       artistEditor =
-        <div>
+        <div className='artist-editor'>
           {editingTitle}
           <div className="artist-edit-row">
             <p>Artist Name:</p>&nbsp;
@@ -323,8 +323,8 @@ class ArtistList extends Component {
             />
           </div>
           <div className="artist-edit-row">
-            <button onClick={this.CancelEdit}>Cancel</button>
-            <button onClick={this.SubmitEdit}>Submit</button>
+            <button className="btn btn-secondary" onClick={this.CancelEdit}>Close</button>
+            <button className="btn btn-success" onClick={this.SubmitEdit}>Submit</button>
           </div>
         </div>
     }
@@ -349,7 +349,7 @@ class ArtistList extends Component {
         <ul className="artist-list nav nav-pills">
           {artistBlocks}
         </ul>
-        <div className="artist-editor">
+        <div className="container">
           {artistEditor}
         </div>
       </div>
