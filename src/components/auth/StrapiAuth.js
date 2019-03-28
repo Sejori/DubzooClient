@@ -158,7 +158,7 @@ class StrapiAuth extends Component {
             placeholder=""
             value={this.state.accessPasswordInput}
             onChange={this.handleChange}
-            size="20"
+            size="25"
           />
           <p>
             Interested in managing your Artists's social with Dubzoo?
