@@ -33,9 +33,6 @@ class App extends Component {
 
   render() {
 
-    var artistList = ""
-    if (this.state.user.jwt) artistList = <ArtistList user={this.state.user} UpdateUser={this.UpdateUser} SelectArtist={this.SelectArtist}/>
-
     return (
       <div>
         <div className="header">
@@ -45,10 +42,10 @@ class App extends Component {
 
         <div className="app-main">
           <div>
-            {artistList}
+            <ArtistList user={this.state.user} UpdateUser={this.UpdateUser} SelectArtist={this.SelectArtist} artist={this.state.selectedArtist}/>
           </div>
 
-          <div className="social-list">
+          <div className="container">
             <SocialList user={this.state.user} artist={this.state.selectedArtist} />
           </div>
         </div>

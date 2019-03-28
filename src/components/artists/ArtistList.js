@@ -8,12 +8,13 @@ import Artist from './Artist'
 import keys from '../../config/keys'
 
 class ArtistList extends Component {
+
   constructor(props) {
     super(props)
 
     this.state = {
-      artists: undefined,
-      editingArtist: null,
+      artists: [],
+      editingArtist: "",
       editingArtistName: "",
       editingYoutubeHandle: "",
       editingSoundcloudHandle: "",
@@ -21,11 +22,7 @@ class ArtistList extends Component {
       editingSpotifyHandle: "",
       editingTwitterHandle: "",
       editingFacebookHandle: "",
-      editingID: ""
-    }
-
-    if (this.state.artists == null) {
-      this.FetchArtists()
+      selectedArtistID: ""
     }
   }
 
@@ -37,6 +34,7 @@ class ArtistList extends Component {
     })
     let artist = await response.json()
     this.setState({
+      editingArtist: await artist._id,
       editingArtistName: await artist.artistName,
       editingYoutubeHandle: await artist.youtubeHandle,
       editingSoundcloudHandle: await artist.soundcloudHandle,
@@ -44,44 +42,31 @@ class ArtistList extends Component {
       editingSpotifyHandle: await artist.spotifyHandle,
       editingTwitterHandle: await artist.twitterHandle,
       editingFacebookHandle: await artist.facebookHandle,
-      editingID: await artist._id
     })
   }
 
   FetchArtists = async() => {
-    console.log("FetchArtists called")
-    // fetch user object from strapi which contains all assigned artists
-    const response = await fetch(keys.STRAPI_URI + '/users/me', {
-      method: "GET",
-      headers: {
-        "Content-Type" : "application/json",
-        "Authorization" : "Bearer " + this.props.user.jwt
-      }
-    })
-    let me = await response.json()
-    let artists = await me.artists
+    try{
+      // fetch user object from strapi which contains all assigned artists
+      const response = await fetch(keys.STRAPI_URI + '/users/me', {
+        method: "GET",
+        headers: {
+          "Content-Type" : "application/json",
+          "Authorization" : "Bearer " + this.props.user.jwt
+        }
+      })
+      let me = await response.json()
+      this.setState({artists: await me.artists})
 
-    // get userID as we don't yet have it from login
-    let userID = await me._id
-    this.props.UpdateUser(userID, this.props.user.name, this.props.user.jwt)
-
-    // call artist component for each artist
-    // let artists = array artist
-    let artistBlocks = artists.map( (item, index) =>
-      <Artist
-        artist={ item }
-        SelectArtist={ () => this.SelectArtist(item) }
-        EditArtist={ () => this.EditArtist(item._id) }
-        DeleteArtist={ () => this.DeleteArtist(item._id) }
-        key={ item._id }
-        index={index} />
-    )
-    artistBlocks.push(<button className="btn btn-primary" onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button>)
-    this.setState({ artists: artistBlocks })
+      // get userID as we don't yet have it from login
+      let userID = await me._id
+      this.props.UpdateUser(userID, this.props.user.name, this.props.user.jwt)
+    } catch (error) {console.log(error)}
   }
 
   SelectArtist = (artist) => {
     console.log("Select artist called for artist ID: ", artist._id)
+    this.setState({selectedArtistID: artist._id})
     this.props.SelectArtist(artist)
   }
 
@@ -116,11 +101,17 @@ class ArtistList extends Component {
       .then(response => {
         // Handle success.
         console.log(
-          'Well done, your artist has been successfully created: ',
+          'Well done, your artist has been successfully updated: ',
           response.data
-        );
+        )
+
+        // call the update function to get artist data
+        fetch(keys.SCRAPER_URI + '/update?artistID=' + response.data._id)
+
         // refresh artists
         this.FetchArtists()
+
+        alert('Artist has been updated. Wait a few moments while we fetch new data then reselect the artist.')
       })
       .catch(error => {
         // Handle error.
@@ -150,9 +141,15 @@ class ArtistList extends Component {
         console.log(
           'Well done, your artist has been successfully created: ',
           response.data
-        );
+        )
+
+        // call the update function to get artist data
+        fetch(keys.SCRAPER_URI + '/update?artistID=' + response.data._id)
+
         // refresh artists
         this.FetchArtists()
+
+        alert('Artist has been added. Wait a few moments while we fetch new data then reselect the artist.')
       })
       .catch(error => {
         // Handle error.
@@ -162,7 +159,7 @@ class ArtistList extends Component {
 
     // Close edit box
     this.setState({
-      editingArtist: null,
+      editingArtist: "",
       editingArtistName: "",
       editingYoutubeHandle: "",
       editingSoundcloudHandle: "",
@@ -170,13 +167,12 @@ class ArtistList extends Component {
       editingSpotifyHandle: "",
       editingTwitterHandle: "",
       editingFacebookHandle: "",
-      editingID: ""
     })
   }
 
   CancelEdit = () => {
     this.setState({
-      editingArtist: null,
+      editingArtist: "",
       editingArtistName: "",
       editingYoutubeHandle: "",
       editingSoundcloudHandle: "",
@@ -184,7 +180,6 @@ class ArtistList extends Component {
       editingSpotifyHandle: "",
       editingTwitterHandle: "",
       editingFacebookHandle: "",
-      editingID: ""
     })
   }
 
@@ -229,7 +224,6 @@ class ArtistList extends Component {
       editingSpotifyHandle: "",
       editingTwitterHandle: "",
       editingFacebookHandle: "",
-      editingID: ""
     })
   }
 
@@ -240,9 +234,15 @@ class ArtistList extends Component {
   }
 
   render() {
+    if (!this.props.user.jwt) {
+      return <div></div>
+    }
+
+    if (!this.state.artists[0]) this.FetchArtists()
+
     let artistEditor
     let editingTitle
-    if (this.state.editingArtist != null) {
+    if (this.state.editingArtist !== "") {
       if (this.state.editingArtist === "new") {
         editingTitle = <h4>New Artist</h4>
       } else {
@@ -329,12 +329,26 @@ class ArtistList extends Component {
         </div>
     }
 
+    // call artist component for each artist
+    // let artists = array artist
+    let artistBlocks = this.state.artists.map( (item, index) =>
+      <Artist
+        artist={ item }
+        SelectArtist={ () => this.SelectArtist(item) }
+        selectedArtistID={ this.state.selectedArtistID }
+        EditArtist={ () => this.EditArtist(item._id) }
+        DeleteArtist={ () => this.DeleteArtist(item._id) }
+        key={ item._id }
+        index={ index } />
+    )
+    artistBlocks.push(<button className="btn btn-primary" onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button>)
+
     return(
       <div className="artists">
         <h4>Your artists</h4>
-        <div className="artist-list">
-          {this.state.artists}
-        </div>
+        <ul className="artist-list nav nav-pills">
+          {artistBlocks}
+        </ul>
         <div className="artist-editor">
           {artistEditor}
         </div>

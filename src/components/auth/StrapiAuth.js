@@ -17,7 +17,8 @@ class StrapiAuth extends Component {
     this.state = {
       usernameInput: "",
       emailInput: "",
-      passwordInput: ""
+      passwordInput: "",
+      accessPasswordInput: ""
     }
   }
 
@@ -104,11 +105,10 @@ class StrapiAuth extends Component {
   }
 
   render() {
-    switch (this.props.user.jwt) {
-
-      case undefined:
+    if (this.state.accessPasswordInput === "MusicRoxxx") {
+      if (!this.props.user.jwt) {
         return(
-          <div>
+          <div className="form-group">
             <input
               name="usernameInput"
               type="text"
@@ -117,7 +117,7 @@ class StrapiAuth extends Component {
               onChange={this.handleChange}
               size="16"
             />
-            <button onClick={this.Login}>Login</button>
+            <button className="btn btn-secondary" onClick={this.Login}>Login</button>
             <br />
             <input
               name="passwordInput"
@@ -127,7 +127,7 @@ class StrapiAuth extends Component {
               onChange={this.handleChange}
               size="16"
             />
-            <button onClick={this.Register}>Register</button>
+            <button className="btn btn-secondary" onClick={this.Register}>Register</button>
             <br />
             <input
               name="emailInput"
@@ -137,20 +137,38 @@ class StrapiAuth extends Component {
               onChange={this.handleChange}
               size="16"
             />
-            <button onClick={this.ForgotPassword}>Forgot password?</button>
+            <button className="btn btn-secondary" onClick={this.ForgotPassword}>Forgot password?</button>
           </div>
         )
-
-      default:
+      } else {
         return(
           <div>
             <p>Hi {this.state.usernameInput}!</p>
-            <button onClick={this.Logout}>LOGOUT</button>
+            <button className="btn btn-secondary" onClick={this.Logout}>LOGOUT</button>
           </div>
         )
+      }
+    } else {
+      return(
+        <div>
+          <h2>Enter access password</h2>
+          <input
+            name="accessPasswordInput"
+            type="text"
+            placeholder=""
+            value={this.state.accessPasswordInput}
+            onChange={this.handleChange}
+            size="20"
+          />
+          <p>
+            Interested in managing your Artists's social with Dubzoo?
+            <br/>
+            Get in touch at <a href="emailto:hello@dubzoo.io">hello@dubzoo.io</a>
+          </p>
+        </div>
+      )
     }
   }
-
 }
 
 export default StrapiAuth;

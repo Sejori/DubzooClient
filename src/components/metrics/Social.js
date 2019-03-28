@@ -58,7 +58,7 @@ class Social extends Component {
     }
 
     return(
-      <div>
+      <div className="social">
         <h2>{this.props.social}</h2>
         <h3>{this.props.handle}</h3>
         <Line data={testData} options={options}/>

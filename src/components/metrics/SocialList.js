@@ -8,12 +8,6 @@ import Social from './Social';
 
 class SocialList extends Component {
 
-  // componentDidUpdate = (prevProps) => {
-  //   if (prevProps.artist !== this.props.artist) {
-  //     this.render()
-  //   }
-  // }
-
   render() {
     if (!this.props.user.jwt) {
       return(
@@ -27,6 +21,7 @@ class SocialList extends Component {
 
     if (this.props.user.jwt) {
       var socials = []
+      var socialGraphs
       let artist = this.props.artist
 
       // if youtube -> create youtube graphs
@@ -84,7 +79,7 @@ class SocialList extends Component {
       }
 
 
-      let socialGraphs = socials.map( (item, index) => {
+      socialGraphs = socials.map( (item, index) => {
 
         if (!item.data.length) return
 
@@ -98,8 +93,12 @@ class SocialList extends Component {
         )
       })
 
+      if (!socialGraphs[0]) {
+        socialGraphs = <p style={{width: "100%", textAlign: "center"}}>Manage artists above then select to see social stats here.</p>
+      }
+
       return(
-        <div>
+        <div className="social-list">
           {socialGraphs}
         </div>
       )
