@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9e4fe55f-1c60-49e3-b145-dc17a25c82cd/deploy-status)](https://app.netlify.com/sites/dubzoo/deploys)
+
 ## Available Scripts
 
 In the project directory, you can run:
