@@ -3,12 +3,22 @@
 // Creates a series of social graphs for each social present on selecteArtist
 
 import React, { Component } from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import "react-tabs/style/react-tabs.css";
 
 import Social from './Social';
 
 class SocialList extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      tabIndex: 0
+    }
+  }
 
   render() {
+
     if (!this.props.user.jwt) {
       return(
         <div>
@@ -23,6 +33,7 @@ class SocialList extends Component {
       var socials = []
       var socialGraphs
       let artist = this.props.artist
+      var socialTabs
 
       // if youtube -> create youtube graphs
       if (artist.youtubeHandle) {
@@ -78,18 +89,27 @@ class SocialList extends Component {
         })
       }
 
+      socialTabs = socials.map( (item, index) => {
+        return (
+          <Tab>
+            {item.social}
+          </Tab>
+        )
+      })
 
       socialGraphs = socials.map( (item, index) => {
 
-        if (!item.data.length) return
+        if (!item.data.length) return ""
 
         return (
-          <Social
-            handle={ item.handle }
-            data={ item.data }
-            social={ item.social }
-            key={ index }
-          />
+          <TabPanel>
+            <Social
+              handle={ item.handle }
+              data={ item.data }
+              social={ item.social }
+              key={ item.social }
+            />
+          </TabPanel>
         )
       })
 
@@ -99,8 +119,13 @@ class SocialList extends Component {
 
       return(
         <div className="social-list">
-          {socialGraphs}
-        </div>
+          <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+            <TabList>
+              {socialTabs}
+            </TabList>
+            {socialGraphs}
+          </Tabs>
+      </div>
       )
     }
   }

@@ -11,6 +11,7 @@
     "react-dom": "^16.6.3",
     "react-google-login": "^4.0.1",
     "react-scripts": "^2.1.8",
+    "react-tabs": "^3.0.0",
     "start": "^5.1.0"
   },
   "scripts": {
