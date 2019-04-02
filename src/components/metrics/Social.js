@@ -5,7 +5,20 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 
+import Card from './Card'
+
 class Social extends Component {
+
+  createName = (oldName) => {
+    let nameParts = oldName.split('_')
+    let newName = nameParts[0]
+    if (nameParts[1]) newName = nameParts[0] + ' ' + nameParts[1]
+    return newName
+  }
+
+  withCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   render() {
     var graphData = []
@@ -44,36 +57,54 @@ class Social extends Component {
 
     // need many graphs due to difference in scale of metrics
     for (i=0; i<graphDataSets.length; i++) {
+      var previous_value
 
       graphData[i] = {}
       graphData[i].datasets = [graphDataSets[i]]
-      console.log(graphData)
 
-      options[i] = {
+      options = {
         "legend": {
-          "labels": {},
-          "position": 'bottom'
-        },
+          "display": true,
         "scales": {
           "xAxes": [{
             "type": "time",
-            // "time": {
-            //   "unit": "day"
-            // }
-          }]
+            "distribution": 'linear',
+            "time": {
+              "displayFormats": {
+                "day": 'MMM D'
+              }
+            }
+          }],
+          "yAxes": [{
+            "ticks": {
+              "suggestedMin": graphDataSets[i].data[0].y * 0.95,
+              "suggestedMax": graphDataSets[i].data[graphDataSets[i].data.length-1].y * 1.05,
+              "callback": this.withCommas(graphDataSets[i].label)
+              }
+            }]
+          }
         }
       }
 
+      if (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-2]) {
+        previous_value = (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-2].y)
+      }
+
       graphs[i] = <div className="graph-div" key={graphData[i].datasets[0].label}>
-        <h2>{graphData[i].datasets[0].label}</h2>
-        <Line className="graph" data={graphData[i]} options={options[i]} key={i}/>
+        <Card
+          platform={this.props.social}
+          color={"#ffffff"}
+          handle={this.props.handle}
+          metric={this.createName(graphData[i].datasets[0].label)}
+          current_value={graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-1].y}
+          previous_value={previous_value}
+        />
+        <Line className="graph" data={graphData[i]} options={options} key={i}/>
       </div>
     }
 
     return(
       <div className="social">
-        <h2>{this.props.social}</h2>
-        <h3>{this.props.handle}</h3>
         <div className="graphs">
           {graphs}
         </div>

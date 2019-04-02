@@ -111,7 +111,7 @@ class ArtistList extends Component {
         // refresh artists
         this.FetchArtists()
 
-        alert('Artist has been updated. Wait a few moments while we fetch new data then reselect the artist.')
+        alert('Artist has been updated. Wait a few moments while we fetch new data then refresh the page.')
       })
       .catch(error => {
         // Handle error.
@@ -149,7 +149,7 @@ class ArtistList extends Component {
         // refresh artists
         this.FetchArtists()
 
-        alert('Artist has been added. Wait a few moments while we fetch new data then reselect the artist.')
+        alert('Artist has been added. Wait a few moments while we fetch new data then refresh the page.')
       })
       .catch(error => {
         // Handle error.
@@ -341,7 +341,7 @@ class ArtistList extends Component {
         key={ item._id }
         index={ index } />
     )
-    artistBlocks.push(<button className="btn btn-primary" onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button>)
+    artistBlocks.push(<button className="btn btn-primary btn-sm" onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button>)
 
     return(
       <div className="artists">

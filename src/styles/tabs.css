@@ -1,0 +1,16 @@
+.react-tabs__tab-list {
+  display: flex;
+  justify-content: center;
+  border-bottom: none;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.react-tabs__tab {
+  border: none;
+}
+
+.react-tabs__tab--selected {
+  background-color: whitesmoke;
+  border-radius: 10px;
+}

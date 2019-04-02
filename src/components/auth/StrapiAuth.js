@@ -58,7 +58,8 @@ class StrapiAuth extends Component {
       })
       .then(response => {
         // Update React State Credentials
-        this.props.UpdateUser(response.data.user.id, response.data.user.username, response.data.jwt);
+        this.props.UpdateUser(response.data.user.id, response.data.user.username, response.data.jwt)
+        this.props.toggleActive()
       })
       .catch(error => {
         // Handle error.
@@ -81,7 +82,8 @@ class StrapiAuth extends Component {
       })
       .then(response => {
         // Update React State Credentials
-        this.props.UpdateUser(response.data.user.id, response.data.user.username, response.data.jwt);
+        this.props.UpdateUser(response.data.user.id, response.data.user.username, response.data.jwt)
+        this.props.toggleActive()
       })
       .catch(error => {
         // Handle error.
@@ -96,75 +98,57 @@ class StrapiAuth extends Component {
       passwordInput: ""
      })
     this.props.UpdateUser(undefined, undefined, undefined);
+    this.props.toggleActive()
   }
 
   handleChange = ({ target }) => {
     this.setState({
       [target.name]: target.value
-    });
+    })
   }
 
   render() {
-    if (this.state.accessPasswordInput === "MusicRoxxx") {
-      if (!this.props.user.jwt) {
-        return(
-          <div className="form-group">
-            <input
-              name="usernameInput"
-              type="text"
-              placeholder="Username"
-              value={this.state.usernameInput}
-              onChange={this.handleChange}
-              size="16"
-            />
-            <button className="btn btn-secondary" onClick={this.Login}>Login</button>
-            <br />
-            <input
-              name="passwordInput"
-              type="password"
-              placeholder="Password"
-              value={this.state.PasswordInput}
-              onChange={this.handleChange}
-              size="16"
-            />
-            <button className="btn btn-secondary" onClick={this.Register}>Register</button>
-            <br />
-            <input
-              name="emailInput"
-              type="text"
-              placeholder="Email"
-              value={this.state.emailInput}
-              onChange={this.handleChange}
-              size="16"
-            />
-            <button className="btn btn-secondary" onClick={this.ForgotPassword}>Forgot password?</button>
-          </div>
-        )
-      } else {
-        return(
-          <div>
-            <p>Hi {this.state.usernameInput}!</p>
-            <button className="btn btn-secondary" onClick={this.Logout}>LOGOUT</button>
-          </div>
-        )
-      }
+    if (!this.props.user.jwt) {
+      return(
+        <div className="form-group">
+          <input
+            name="usernameInput"
+            type="text"
+            placeholder="Username"
+            value={this.state.usernameInput}
+            onChange={this.handleChange}
+            size="16"
+          />
+          <br />
+          <input
+            name="passwordInput"
+            type="password"
+            placeholder="Password"
+            value={this.state.PasswordInput}
+            onChange={this.handleChange}
+            size="16"
+          />
+          <br />
+          <button className="btn btn-secondary btn-sm" onClick={this.Login}>Login</button>
+          <br />
+          <input
+            name="emailInput"
+            type="text"
+            placeholder="Email"
+            value={this.state.emailInput}
+            onChange={this.handleChange}
+            size="16"
+          />
+          <br />
+          <button className="btn btn-secondary btn-sm" onClick={this.Register}>Register</button>
+          <br />
+          <button className="btn btn-secondary btn-sm" onClick={this.ForgotPassword}>Forgot password?</button>
+        </div>
+      )
     } else {
       return(
         <div>
-          <h2>Enter access password</h2>
-          <input
-            name="accessPasswordInput"
-            type="text"
-            placeholder=""
-            value={this.state.accessPasswordInput}
-            onChange={this.handleChange}
-            size="25"
-          />
-          <p>
-            Interested in managing your Artists's social with Dubzoo?
-            <br/>
-            Get in touch at <a href="emailto:hello@dubzoo.io">hello@dubzoo.io</a>
-          </p>
+          <button className="btn btn-secondary" onClick={this.Logout}>LOGOUT</button>
         </div>
       )
     }

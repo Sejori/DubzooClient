@@ -2,11 +2,13 @@
 //
 // Creates a series of social graphs for each social present on selecteArtist
 
-import React, { Component } from 'react';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import "react-tabs/style/react-tabs.css";
+import React, { Component } from 'react'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import "react-tabs/style/react-tabs.css"
+import "../../styles/tabs.css"
 
-import Social from './Social';
+import Social from './Social'
+import Overview from './Overview'
 
 class SocialList extends Component {
   constructor(props) {
@@ -30,10 +32,10 @@ class SocialList extends Component {
     }
 
     if (this.props.user.jwt) {
-      var socials = []
-      var socialGraphs
       let artist = this.props.artist
-      var socialTabs
+      var socials = []
+      var socialGraphs = [<TabPanel><Overview artist={artist}/></TabPanel>]
+      var socialTabs = [<Tab>Overview</Tab>]
 
       // if youtube -> create youtube graphs
       if (artist.youtubeHandle) {
@@ -89,18 +91,13 @@ class SocialList extends Component {
         })
       }
 
-      socialTabs = socials.map( (item, index) => {
-        return (
-          <Tab>
-            {item.social}
-          </Tab>
-        )
-      })
+      // add individual social tabs and graphs to display variables
+      socialTabs.push(socials.map( (item, index) => {
+        return (<Tab>{item.social}</Tab>)
+      }))
 
-      socialGraphs = socials.map( (item, index) => {
-
+      socialGraphs.push(socials.map( (item, index) => {
         if (!item.data.length) return ""
-
         return (
           <TabPanel>
             <Social
@@ -111,7 +108,7 @@ class SocialList extends Component {
             />
           </TabPanel>
         )
-      })
+      }))
 
       if (!socialGraphs[0]) {
         socialGraphs = <p style={{width: "100%", textAlign: "center"}}>Manage artists above then select to see social stats here.</p>

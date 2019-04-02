@@ -4,7 +4,7 @@
 // components.
 
 import React, { Component } from 'react'
-import StrapiAuth from './auth/StrapiAuth'
+import Header from './Header'
 import SocialList from './metrics/SocialList'
 import ArtistList from './artists/ArtistList'
 
@@ -34,11 +34,8 @@ class App extends Component {
   render() {
 
     return (
-      <div>
-        <div className="header">
-          <h1>DUBZOO</h1>
-          <StrapiAuth UpdateUser={this.UpdateUser} user={this.state.user}/>
-        </div>
+      <div className="wrapper">
+        <Header UpdateUser={this.UpdateUser} user={this.state.user}/>
 
         <div className="app-main">
           <div>
