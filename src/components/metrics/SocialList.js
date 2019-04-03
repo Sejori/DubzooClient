@@ -38,8 +38,8 @@ class SocialList extends Component {
       var socialTabs = []
 
       if (artist.artistName) {
-        socialGraphs.push(<TabPanel><Overview artist={artist}/></TabPanel>)
-        socialTabs.push(<Tab>Overview</Tab>)
+        socialGraphs.push(<TabPanel key="overview"><Overview artist={artist}/></TabPanel>)
+        socialTabs.push(<Tab key="overview">Overview</Tab>)
       }
 
       // if youtube -> create youtube graphs
@@ -102,7 +102,15 @@ class SocialList extends Component {
       }))
 
       socialGraphs.push(socials.map( (item, index) => {
-        if (!item.data.length) return ""
+        if (!item.data.length) return (
+          <div>
+            <h4 style={{ textAlign: "center" }}>There is currently no data for this social.</h4>
+            <br />
+            <br />
+            <p>Either we are still gathering the data or the handle that you have input cannot be found.</p>
+            <p>Make sure you can find the artist at [insert socialplatform].com/[insert artisthandle]</p>
+          </div>
+        )
         return (
           <TabPanel>
             <Social

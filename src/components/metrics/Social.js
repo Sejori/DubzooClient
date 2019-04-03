@@ -57,12 +57,13 @@ class Social extends Component {
 
     // need many graphs due to difference in scale of metrics
     for (i=0; i<graphDataSets.length; i++) {
+      var current_value
       var previous_value
 
       graphData[i] = {}
       graphData[i].datasets = [graphDataSets[i]]
 
-      options = {
+      options[i] = {
         "legend": {
           "display": true,
         "scales": {
@@ -90,16 +91,20 @@ class Social extends Component {
         previous_value = (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-2].y)
       }
 
+      if (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-1]) {
+        current_value = (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-1].y)
+      }
+
       graphs[i] = <div className="graph-div" key={graphData[i].datasets[0].label}>
         <Card
           platform={this.props.social}
           color={"#ffffff"}
           handle={this.props.handle}
           metric={this.createName(graphData[i].datasets[0].label)}
-          current_value={graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-1].y}
+          current_value={current_value}
           previous_value={previous_value}
         />
-        <Line className="graph" data={graphData[i]} options={options} key={i}/>
+        <Line data={graphData[i]} options={options[i]} key={i}/>
       </div>
     }
 

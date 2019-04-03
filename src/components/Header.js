@@ -55,10 +55,6 @@ class Header extends Component {
 
     if (this.state.accessPasswordInput === "MusicRoxxx") {
       barrier = menuButton
-      if (this.state.authorised === false) {
-        this.toggleActive()
-        this.setState({ authorised: true })
-      }
     }
 
     if (this.state.active) {

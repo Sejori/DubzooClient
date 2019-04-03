@@ -65,13 +65,11 @@ class ArtistList extends Component {
   }
 
   SelectArtist = (artist) => {
-    console.log("Select artist called for artist ID: ", artist._id)
     this.setState({selectedArtistID: artist._id})
     this.props.SelectArtist(artist)
   }
 
   EditArtist = (artistID) => {
-    console.log("Edit artist called for artist ID: ", artistID)
     this.setState({ editingArtist: artistID })
     if (artistID !== "new") {
       this.FetchArtist(artistID)
@@ -184,7 +182,6 @@ class ArtistList extends Component {
   }
 
   DeleteArtist = (artistID) => {
-    console.log("Delete artist called for artist ID: ", artistID)
     // create alert for are you sure
     var r = window.confirm("Are you sure? You will lose all data for this artist.")
     if (r === true) {

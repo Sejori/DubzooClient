@@ -162,6 +162,7 @@ class Overview extends Component {
         <div className="row">
           {cards.map(item => (
             <Card
+              key={ item.platform }
               platform={ item.platform }
               colour={ item.colour}
               handle={ item.handle }
