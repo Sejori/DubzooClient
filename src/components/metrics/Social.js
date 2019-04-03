@@ -5,8 +5,6 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import Card from './Card'
-
 class Social extends Component {
 
   createName = (oldName) => {
@@ -16,8 +14,22 @@ class Social extends Component {
     return newName
   }
 
-  withCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  formatDate = (dateArray) => {
+    let dates = dateArray.map(element => {
+      var date = new Date(element)
+      var dd = date.getDate();
+      var mm = date.getMonth() + 1; //January is 0!
+
+      var yyyy = date.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      return dd + '/' + mm + '/' + yyyy;
+    })
+    return dates
   }
 
   render() {
@@ -28,6 +40,7 @@ class Social extends Component {
     var j = 0
 
     let graphDataSets = []
+    let justX = [] // need this for graph labels
     // build graph data sets for every parameter in data
     for (var key in this.props.data[0]) {
 
@@ -37,10 +50,10 @@ class Social extends Component {
         graphDataSets[i].label = key
         graphDataSets[i].data = []
         graphDataSets[i].fill = false
-        graphDataSets[i].borderWidth = 5
-        graphDataSets[i].lineTension = 0.25
-        graphDataSets[i].borderColor = "#09d6cc"
-        graphDataSets[i].backgroundColor = "rgba(9, 214, 204, 0.5)"
+        graphDataSets[i].borderWidth = 2
+        graphDataSets[i].lineTension = 0
+        graphDataSets[i].borderColor = "#5801C3"
+        graphDataSets[i].backgroundColor = "#fff"
 
         for (j=0; j<this.props.data.length; j++) {
 
@@ -48,6 +61,7 @@ class Social extends Component {
           graphDataSets[i].data[j] = {}
 
           // build x values from data times
+          justX[j] = this.props.data[j].date_requested
           graphDataSets[i].data[j].x = this.props.data[j].date_requested
           graphDataSets[i].data[j].y = this.props.data[j][key]
         }
@@ -57,33 +71,27 @@ class Social extends Component {
 
     // need many graphs due to difference in scale of metrics
     for (i=0; i<graphDataSets.length; i++) {
-      var current_value
-      var previous_value
+      var current_value = 0
+      var previous_value = 0
 
       graphData[i] = {}
       graphData[i].datasets = [graphDataSets[i]]
+      graphData[i].labels = this.formatDate(justX)
+      graphData[i].key = graphDataSets[i].label
 
-      options[i] = {
+      options = {
         "legend": {
-          "display": true,
+          "display": false
+        },
         "scales": {
-          "xAxes": [{
-            "type": "time",
-            "distribution": 'linear',
-            "time": {
-              "displayFormats": {
-                "day": 'MMM D'
-              }
-            }
-          }],
           "yAxes": [{
             "ticks": {
-              "suggestedMin": graphDataSets[i].data[0].y * 0.95,
-              "suggestedMax": graphDataSets[i].data[graphDataSets[i].data.length-1].y * 1.05,
-              "callback": this.withCommas(graphDataSets[i].label)
+              "beginAtZero": true,
+              "callback": function (x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
               }
-            }]
-          }
+            }
+          }]
         }
       }
 
@@ -95,16 +103,19 @@ class Social extends Component {
         current_value = (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-1].y)
       }
 
-      graphs[i] = <div className="graph-div" key={graphData[i].datasets[0].label}>
-        <Card
-          platform={this.props.social}
-          color={"#ffffff"}
-          handle={this.props.handle}
-          metric={this.createName(graphData[i].datasets[0].label)}
-          current_value={current_value}
-          previous_value={previous_value}
-        />
-        <Line data={graphData[i]} options={options[i]} key={i}/>
+      let changeValue = current_value - previous_value
+      let changePercent = ((changeValue / this.props.previous_value) * 100).toFixed(2);
+      let changeIcon = '-'
+      if (changeValue > 0) changeIcon = '⬆️'
+      if (changeValue < 0) changeIcon = '⬇️'
+
+      graphs[i] = <div className="card mb-3" style={{borderWidth: "1px", borderColor: this.props.colour, width: "30rem"}} key={graphData[i].datasets[0].label}>
+        <div className="card-header">{this.props.social} @{this.props.handle}</div>
+        <div className="card-body">
+          <h2 className="card-title" style={{textAlign: "center"}}>{this.createName(graphData[i].datasets[0].label)}</h2>
+          <Line data={graphData[i]} options={options} key={i}/>
+          <p className="card-text">{changeIcon} {changeValue} {changePercent}% (past 24hrs)</p>
+        </div>
       </div>
     }
 

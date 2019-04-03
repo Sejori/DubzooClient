@@ -6,6 +6,8 @@ import React, { Component } from 'react';
 class Card extends Component {
 
   withCommas = (x) => {
+    x = Number(x)
+    if (x > 1000) return x
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
