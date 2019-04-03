@@ -346,7 +346,7 @@ class ArtistList extends Component {
     return(
       <div className="artists">
         <h4>Your artists</h4>
-        <ul className="artist-list nav nav-pills">
+        <ul className="nav nav-pills artist-list">
           {artistBlocks}
         </ul>
         <div className="container">

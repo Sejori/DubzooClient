@@ -34,8 +34,13 @@ class SocialList extends Component {
     if (this.props.user.jwt) {
       let artist = this.props.artist
       var socials = []
-      var socialGraphs = [<TabPanel><Overview artist={artist}/></TabPanel>]
-      var socialTabs = [<Tab>Overview</Tab>]
+      var socialGraphs = []
+      var socialTabs = []
+
+      if (artist.artistName) {
+        socialGraphs.push(<TabPanel><Overview artist={artist}/></TabPanel>)
+        socialTabs.push(<Tab>Overview</Tab>)
+      }
 
       // if youtube -> create youtube graphs
       if (artist.youtubeHandle) {

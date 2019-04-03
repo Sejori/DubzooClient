@@ -3,7 +3,8 @@ html, body  { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Robot
   width: device-width;
   background-color: #fff;
 }
-.wrapper { min-height: 100vh; }
+.wrapper { height: 100vh; display: flex; flex-direction: column; }
+.header, .app-main, .footer { flex-shrink: 0; }
 h1    { font-size: 5vw; margin: 0px; }
 h4    { margin: 0px; }
 p     { margin: 0px; font-size: 12px; }
@@ -31,12 +32,14 @@ input { border: none; margin: 1px; }
 
 .app-main {
   margin: 10px;
+  flex-grow: 1;
 }
 
 .artist-list {
   margin: 10px;
   margin-left: 15px;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .artist-list li {
@@ -91,11 +94,6 @@ input { border: none; margin: 1px; }
   justify-content: center;
 }
 
-.graphs * {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
 .social h2:first-letter {
     text-transform:capitalize;
 }
@@ -109,7 +107,5 @@ input { border: none; margin: 1px; }
   border: solid;
   border-color: whitesmoke;
   border-width: 1px 0px 0px 0px;
-  position: relative;
-  bottom: 0;
   z-index: 0;
 }

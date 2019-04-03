@@ -1,5 +1,6 @@
 .react-tabs__tab-list {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   border-bottom: none;
   margin-top: 20px;

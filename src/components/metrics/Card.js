@@ -22,7 +22,7 @@ class Card extends Component {
         <div className="card-body">
           <h4 className="card-title" style={{textAlign: "center"}}>{this.props.metric}</h4>
           <h2 className="card-title" style={{textAlign: "center"}}>{this.withCommas(this.props.current_value)}</h2>
-          <p className="card-text">{changeIcon} {changeValue} {changePercent}% (24hrs)</p>
+          <p className="card-text">{changeIcon} {changeValue} {changePercent}% (past 24hrs)</p>
         </div>
       </div>
     )
