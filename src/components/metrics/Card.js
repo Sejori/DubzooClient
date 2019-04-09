@@ -17,6 +17,8 @@ class Card extends Component {
     let changeIcon = '-'
     if (changeValue > 0) changeIcon = '⬆️'
     if (changeValue < 0) changeIcon = '⬇️'
+    if (changePercent > 100) changePercent = 0
+    if (changePercent.isNan) changePercent = 0
 
     return(
       <div className='card mb-3' style={{borderWidth: "1px", borderColor: this.props.colour, width: "20rem"}}>
@@ -24,7 +26,7 @@ class Card extends Component {
         <div className="card-body">
           <h4 className="card-title" style={{textAlign: "center"}}>{this.props.metric}</h4>
           <h2 className="card-title" style={{textAlign: "center"}}>{this.withCommas(this.props.current_value)}</h2>
-          <p className="card-text">{changeIcon} {changeValue} {changePercent}% (past 24hrs)</p>
+          <p className="card-text">{changeIcon} {changeValue} {changePercent}%</p>
         </div>
       </div>
     )

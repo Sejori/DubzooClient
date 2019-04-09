@@ -18,11 +18,12 @@ class StrapiAuth extends Component {
       usernameInput: "",
       emailInput: "",
       passwordInput: "",
-      accessPasswordInput: ""
+      accessPasswordInput: "",
+      view: "default"
     }
   }
 
-  ForgotPassword = () => {
+  forgotPassword = () => {
     if ( this.state.emailInput === "" ) {
       alert("Please input email address")
       return
@@ -43,7 +44,7 @@ class StrapiAuth extends Component {
       })
   }
 
-  Register = () => {
+  register = () => {
 
     if (this.state.usernameInput === "" || this.state.passwordInput === "" || this.state.emailInput === "" ) {
       alert("Please input username, email and password to register!");
@@ -58,7 +59,9 @@ class StrapiAuth extends Component {
       })
       .then(response => {
         // Update React State Credentials
-        this.props.UpdateUser(response.data.user.id, response.data.user.username, response.data.jwt)
+        // set dubzooJWT in localStorage
+        localStorage.setItem('dubzooJWT', response.data.jwt)
+        this.props.updateUser(response.data.jwt)
         this.props.toggleActive()
       })
       .catch(error => {
@@ -67,7 +70,7 @@ class StrapiAuth extends Component {
       });
   }
 
-  Login = () => {
+  login = () => {
 
     if (this.state.usernameInput === "" || this.state.passwordInput === "" ) {
       alert("Please input username and password to login!");
@@ -82,7 +85,9 @@ class StrapiAuth extends Component {
       })
       .then(response => {
         // Update React State Credentials
-        this.props.UpdateUser(response.data.user.id, response.data.user.username, response.data.jwt)
+        // set dubzooJWT in localStorage
+        localStorage.setItem('dubzooJWT', response.data.jwt)
+        this.props.updateUser(response.data.jwt)
         this.props.toggleActive()
       })
       .catch(error => {
@@ -91,14 +96,19 @@ class StrapiAuth extends Component {
       });
   }
 
-  Logout = () => {
+  logout = () => {
     this.setState({
       usernameInput: "",
       emailInput: "",
       passwordInput: ""
      })
-    this.props.UpdateUser(undefined, undefined, undefined);
+    localStorage.clear()
+    this.props.updateUser(undefined)
     this.props.toggleActive()
+  }
+
+  changeView = (view) => {
+    this.setState({ view: view })
   }
 
   handleChange = ({ target }) => {
@@ -109,46 +119,93 @@ class StrapiAuth extends Component {
 
   render() {
     if (!this.props.user.jwt) {
-      return(
-        <div className="form-group">
-          <input
-            name="usernameInput"
-            type="text"
-            placeholder="Username"
-            value={this.state.usernameInput}
-            onChange={this.handleChange}
-            size="16"
-          />
-          <br />
-          <input
-            name="passwordInput"
-            type="password"
-            placeholder="Password"
-            value={this.state.PasswordInput}
-            onChange={this.handleChange}
-            size="16"
-          />
-          <br />
-          <button className="btn btn-secondary btn-sm" onClick={this.Login}>Login</button>
-          <br />
-          <input
-            name="emailInput"
-            type="text"
-            placeholder="Email"
-            value={this.state.emailInput}
-            onChange={this.handleChange}
-            size="16"
-          />
-          <br />
-          <button className="btn btn-secondary btn-sm" onClick={this.Register}>Register</button>
-          <br />
-          <button className="btn btn-secondary btn-sm" onClick={this.ForgotPassword}>Forgot password?</button>
-        </div>
-      )
+      switch (this.state.view) {
+        case "login":
+          return(
+            <div className="form-group">
+              <input
+                name="usernameInput"
+                type="text"
+                placeholder="Username"
+                value={this.state.usernameInput}
+                onChange={this.handleChange}
+                size="16"
+              />
+              <br />
+              <input
+                name="passwordInput"
+                type="password"
+                placeholder="Password"
+                value={this.state.PasswordInput}
+                onChange={this.handleChange}
+                size="16"
+              />
+              <br />
+              <button className="btn btn-secondary btn-sm" onClick={this.login}>Login</button>
+            </div>
+          )
+      case "register":
+        return(
+          <div className="form-group">
+            <input
+              name="usernameInput"
+              type="text"
+              placeholder="Username"
+              value={this.state.usernameInput}
+              onChange={this.handleChange}
+              size="16"
+            />
+            <br />
+            <input
+              name="passwordInput"
+              type="password"
+              placeholder="Password"
+              value={this.state.PasswordInput}
+              onChange={this.handleChange}
+              size="16"
+            />
+            <br />
+            <input
+              name="emailInput"
+              type="text"
+              placeholder="Email"
+              value={this.state.emailInput}
+              onChange={this.handleChange}
+              size="16"
+            />
+            <br />
+            <button className="btn btn-secondary btn-sm" onClick={this.register}>Register</button>
+            <br />
+          </div>
+        )
+      case "forgot-password":
+        return(
+          <div className="form-group">
+            <input
+              name="emailInput"
+              type="text"
+              placeholder="Email"
+              value={this.state.emailInput}
+              onChange={this.handleChange}
+              size="16"
+            />
+            <br />
+            <button className="btn btn-secondary btn-sm" onClick={this.forgotPassword}>Send password reset email</button>
+          </div>
+        )
+      default:
+        return(
+          <div>
+            <button className="btn btn-secondary btn-sm" onClick={() => this.changeView("login")}>Login</button>
+            <button className="btn btn-secondary btn-sm" onClick={() => this.changeView("register")}>Register</button>
+            <button className="btn btn-secondary btn-sm" onClick={() => this.changeView("forgot-password")}>Forgot password?</button>
+          </div>
+        )
+    }
     } else {
       return(
         <div>
-          <button className="btn btn-secondary" onClick={this.Logout}>LOGOUT</button>
+          <button className="btn btn-secondary" onClick={this.logout}>LOGOUT</button>
         </div>
       )
     }

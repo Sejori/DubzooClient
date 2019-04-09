@@ -53,12 +53,16 @@ class Header extends Component {
       </p>
     </div>
 
+    if (this.props.user.jwt) {
+      barrier = menuButton
+    }
+
     if (this.state.accessPasswordInput === "MusicRoxxx") {
       barrier = menuButton
     }
 
     if (this.state.active) {
-      menu = <StrapiAuth UpdateUser={this.props.UpdateUser} user={this.props.user} toggleActive={this.toggleActive}/>
+      menu = <StrapiAuth updateUser={this.props.updateUser} user={this.props.user} toggleActive={this.toggleActive}/>
     }
 
     return (

@@ -13,6 +13,7 @@ class ArtistList extends Component {
     super(props)
 
     this.state = {
+      userID: "",
       artists: [],
       editingArtist: "",
       editingArtistName: "",
@@ -59,8 +60,7 @@ class ArtistList extends Component {
       this.setState({artists: await me.artists})
 
       // get userID as we don't yet have it from login
-      let userID = await me._id
-      this.props.UpdateUser(userID, this.props.user.name, this.props.user.jwt)
+      this.setState({ userID: await me._id })
     } catch (error) {console.log(error)}
   }
 
@@ -128,7 +128,7 @@ class ArtistList extends Component {
           spotifyHandle: this.state.editingSpotifyHandle,
           twitterHandle: this.state.editingTwitterHandle,
           facebookHandle: this.state.editingFacebookHandle,
-          user: this.props.user.userID
+          user: this.state.userID
         },
         headers: {
           Authorization: 'Bearer ' + this.props.user.jwt
@@ -260,61 +260,61 @@ class ArtistList extends Component {
             />
           </div>
           <div className="artist-edit-row">
-            <p>YouTube Account:</p>&nbsp;
+            <p>youtube.com/user/</p>&nbsp;
             <input
               name="editingYoutubeHandle"
               type="text"
-              placeholder="YouTube account name"
+              placeholder="artist-YT-handle"
               value={this.state.editingYoutubeHandle}
               onChange={this.HandleEditChange}
             />
           </div>
           <div className="artist-edit-row">
-            <p>Soundcloud Account:</p>&nbsp;
+            <p>soundcloud.com/</p>&nbsp;
             <input
               name="editingSoundcloudHandle"
               type="text"
-              placeholder="SoundCloud account name"
+              placeholder="artist-SC-handle"
               value={this.state.editingSoundcloudHandle}
               onChange={this.HandleEditChange}
             />
           </div>
           <div className="artist-edit-row">
-            <p>Instagram Account:</p>&nbsp;
+            <p>instagram.com/</p>&nbsp;
             <input
               name="editingInstagramHandle"
               type="text"
-              placeholder="Instagram account name"
+              placeholder="artist-IG-handle"
               value={this.state.editingInstagramHandle}
               onChange={this.HandleEditChange}
             />
           </div>
           <div className="artist-edit-row">
-            <p>Spotify Account:</p>&nbsp;
+            <p>Spotify Artist Name:</p>&nbsp;
             <input
               name="editingSpotifyHandle"
               type="text"
-              placeholder="Spotify account name"
+              placeholder="Spotify artist name"
               value={this.state.editingSpotifyHandle}
               onChange={this.HandleEditChange}
             />
           </div>
           <div className="artist-edit-row">
-            <p>Twitter Account:</p>&nbsp;
+            <p>twitter.com/</p>&nbsp;
             <input
               name="editingTwitterHandle"
               type="text"
-              placeholder="Twitter account name"
+              placeholder="artist-Twitter-handle"
               value={this.state.editingTwitterHandle}
               onChange={this.HandleEditChange}
             />
           </div>
           <div className="artist-edit-row">
-            <p>Facebook Account:</p>&nbsp;
+            <p>facebook.com/</p>&nbsp;
             <input
               name="editingFacebookHandle"
               type="text"
-              placeholder="Facebook account name"
+              placeholder="Facebook-page-name"
               value={this.state.editingFacebookHandle}
               onChange={this.HandleEditChange}
             />
@@ -354,4 +354,4 @@ class ArtistList extends Component {
   }
 }
 
-export default ArtistList;
+export default ArtistList

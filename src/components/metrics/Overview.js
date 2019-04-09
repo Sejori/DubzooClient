@@ -6,8 +6,20 @@ import React, { Component } from 'react';
 import Card from './Card'
 
 class Overview extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      timePeriod: 24
+    }
+  }
+
+  changeTimePeriod = (period) => {
+    this.setState({ timePeriod: period })
+  }
 
   render() {
+    let timeDifference = 1 + this.state.timePeriod/24
     if (!this.props.artist.artistName) {
       return(
         <h2>Select an artist above to see their metrics.</h2>
@@ -24,8 +36,8 @@ class Overview extends Component {
     if (artist.youtubeHandle) {
       current_value = 0
       previous_value = 0
-      if (artist.youtubeData[artist.youtubeData.length-2]) {
-        previous_value = artist.youtubeData[artist.youtubeData.length-2].subscribers
+      if (artist.youtubeData[artist.youtubeData.length-timeDifference]) {
+        previous_value = artist.youtubeData[artist.youtubeData.length-timeDifference].subscribers
       }
       if (artist.youtubeData[artist.youtubeData.length-1]) {
         current_value = artist.youtubeData[artist.youtubeData.length-1].subscribers
@@ -45,8 +57,8 @@ class Overview extends Component {
     if (artist.soundcloudHandle) {
       current_value = 0
       previous_value = 0
-      if (artist.soundcloudData[artist.soundcloudData.length-2]) {
-        previous_value = artist.soundcloudData[artist.soundcloudData.length-2].follower_count
+      if (artist.soundcloudData[artist.soundcloudData.length-timeDifference]) {
+        previous_value = artist.soundcloudData[artist.soundcloudData.length-timeDifference].follower_count
       }
       if (artist.soundcloudData[artist.soundcloudData.length-1].follower_count) {
         current_value = artist.soundcloudData[artist.soundcloudData.length-1].follower_count
@@ -66,8 +78,8 @@ class Overview extends Component {
     if (artist.instagramHandle) {
       current_value = 0
       previous_value = 0
-      if (artist.instagramData[artist.instagramData.length-2]) {
-        previous_value = artist.instagramData[artist.instagramData.length-2].followers
+      if (artist.instagramData[artist.instagramData.length-timeDifference]) {
+        previous_value = artist.instagramData[artist.instagramData.length-timeDifference].followers
       }
       if (artist.instagramData[artist.instagramData.length-1].followers) {
         current_value = artist.instagramData[artist.instagramData.length-1].followers
@@ -87,8 +99,8 @@ class Overview extends Component {
     if (artist.spotifyHandle) {
       current_value = 0
       previous_value = 0
-      if (artist.spotifyData[artist.spotifyData.length-2]) {
-        previous_value = artist.spotifyData[artist.spotifyData.length-2].followers
+      if (artist.spotifyData[artist.spotifyData.length-timeDifference]) {
+        previous_value = artist.spotifyData[artist.spotifyData.length-timeDifference].followers
       }
       if (artist.spotifyData[artist.spotifyData.length-1].followers) {
         current_value = artist.spotifyData[artist.spotifyData.length-1].followers
@@ -108,8 +120,8 @@ class Overview extends Component {
     if (artist.facebookHandle) {
       current_value = 0
       previous_value = 0
-      if (artist.facebookData[artist.facebookData.length-2]) {
-        previous_value = artist.facebookData[artist.facebookData.length-2].like_count
+      if (artist.facebookData[artist.facebookData.length-timeDifference]) {
+        previous_value = artist.facebookData[artist.facebookData.length-timeDifference].like_count
       }
       if (artist.facebookData[artist.facebookData.length-1].like_count) {
         current_value = artist.facebookData[artist.facebookData.length-1].like_count
@@ -129,8 +141,8 @@ class Overview extends Component {
     if (artist.twitterHandle) {
       current_value = 0
       previous_value = 0
-      if (artist.twitterData[artist.twitterData.length-2]) {
-        previous_value = artist.twitterData[artist.twitterData.length-2].followers
+      if (artist.twitterData[artist.twitterData.length-timeDifference]) {
+        previous_value = artist.twitterData[artist.twitterData.length-timeDifference].followers
       }
       if (artist.twitterData[artist.twitterData.length-1].followers) {
         current_value = artist.twitterData[artist.twitterData.length-1].followers
@@ -147,8 +159,21 @@ class Overview extends Component {
       totalPrevious.push(previous_value)
     }
 
+    let timePeriods = [24, 72, 168, 744]
+    let timeButtons = timePeriods.map(item => {
+      let classname = "btn btn-secondary btn-sm"
+      if (this.state.timePeriod === item) classname = "btn btn-secondary btn-sm active"
+
+      let buttonContent = String(item/24) + " days"
+      if (item === 24) buttonContent = "1 day"
+      return <button className={classname} onClick={() => this.changeTimePeriod(item)} key={item}>{buttonContent}</button>
+    })
+
     return(
       <div className="overview">
+        <div className="time-toggles">
+          {timeButtons}
+        </div>
         <div className="overview-total">
           <Card
             platform={"Total"}

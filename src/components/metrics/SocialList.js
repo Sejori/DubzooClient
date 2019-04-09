@@ -43,7 +43,7 @@ class SocialList extends Component {
       }
 
       // if youtube -> create youtube graphs
-      if (artist.youtubeHandle) {
+      if (artist.youtubeHandle && artist.youtubeData[0].date_requested) {
         socials.push({
           handle: artist.youtubeHandle,
           data: artist.youtubeData || [],
@@ -52,7 +52,7 @@ class SocialList extends Component {
       }
 
       // if soundcloud -> create youtube graphs
-      if (artist.soundcloudHandle) {
+      if (artist.soundcloudHandle && artist.soundcloudData[0].date_requested) {
         socials.push({
           handle: artist.soundcloudHandle,
           data: artist.soundcloudData || [],
@@ -61,7 +61,7 @@ class SocialList extends Component {
       }
 
       // if spotify -> create youtube graphs
-      if (artist.spotifyHandle) {
+      if (artist.spotifyHandle && artist.spotifyData[0].date_requested) {
         socials.push({
           handle: artist.spotifyHandle,
           data: artist.spotifyData || [],
@@ -70,7 +70,7 @@ class SocialList extends Component {
       }
 
       // if instagram -> create youtube graphs
-      if (artist.instagramHandle) {
+      if (artist.instagramHandle && artist.instagramData[0].date_requested) {
         socials.push({
           handle: artist.instagramHandle,
           data: artist.instagramData || [],
@@ -79,7 +79,7 @@ class SocialList extends Component {
       }
 
       // if facebook -> create youtube graphs
-      if (artist.facebookHandle) {
+      if (artist.facebookHandle && artist.facebookData[0].date_requested) {
         socials.push({
           handle: artist.facebookHandle,
           data: artist.facebookData || [],
@@ -88,7 +88,7 @@ class SocialList extends Component {
       }
 
       // if twitter -> create youtube graphs
-      if (artist.twitterHandle) {
+      if (artist.twitterHandle && artist.twitterData[0].date_requested) {
         socials.push({
           handle: artist.twitterHandle,
           data: artist.twitterData || [],
@@ -102,7 +102,7 @@ class SocialList extends Component {
       }))
 
       socialGraphs.push(socials.map( (item, index) => {
-        if (!item.data.length) return (
+        if (!item.data[0]) return (
           <div>
             <h4 style={{ textAlign: "center" }}>There is currently no data for this social.</h4>
             <br />
