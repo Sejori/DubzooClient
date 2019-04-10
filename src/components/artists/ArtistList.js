@@ -34,6 +34,7 @@ class ArtistList extends Component {
       }
     })
     let artist = await response.json()
+    console.log(artist)
     this.setState({
       editingArtist: await artist._id,
       editingArtistName: await artist.artistName,
@@ -109,7 +110,7 @@ class ArtistList extends Component {
         // refresh artists
         this.FetchArtists()
 
-        alert('Artist has been updated. Wait a few moments while we fetch new data then refresh the page.')
+        alert('Artist has been updated.\n\nNOTE: Please wait a minute then refresh page to see new data. If no data appears for a social after a few minutes, it is likely that you entered the information incorrectly.')
       })
       .catch(error => {
         // Handle error.
@@ -146,8 +147,7 @@ class ArtistList extends Component {
 
         // refresh artists
         this.FetchArtists()
-
-        alert('Artist has been added. Wait a few moments while we fetch new data then refresh the page.')
+        alert('Artist has been added.\n\nNOTE: Please wait a minute then refresh page to see new data. If no data appears for a social after a few minutes, it is likely that you entered the information incorrectly.')
       })
       .catch(error => {
         // Handle error.
@@ -249,6 +249,7 @@ class ArtistList extends Component {
       artistEditor =
         <div className='artist-editor'>
           {editingTitle}
+          <p>Make sure to enter artist names in lower case and exactly as they appear if [social].com/ entry type is shown.</p>
           <div className="artist-edit-row">
             <p>Artist Name:</p>&nbsp;
             <input

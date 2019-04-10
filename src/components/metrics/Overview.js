@@ -33,7 +33,7 @@ class Overview extends Component {
     var current_value
     var previous_value
 
-    if (artist.youtubeHandle) {
+    if (artist.youtubeHandle && artist.youtubeData[0]) {
       current_value = 0
       previous_value = 0
       if (artist.youtubeData[artist.youtubeData.length-timeDifference]) {
@@ -54,7 +54,7 @@ class Overview extends Component {
       totalPrevious.push(previous_value)
     }
 
-    if (artist.soundcloudHandle) {
+    if (artist.soundcloudHandle && artist.soundcloudData[0]) {
       current_value = 0
       previous_value = 0
       if (artist.soundcloudData[artist.soundcloudData.length-timeDifference]) {
@@ -75,7 +75,7 @@ class Overview extends Component {
       totalPrevious.push(previous_value)
     }
 
-    if (artist.instagramHandle) {
+    if (artist.instagramHandle && artist.instagramData[0]) {
       current_value = 0
       previous_value = 0
       if (artist.instagramData[artist.instagramData.length-timeDifference]) {
@@ -96,7 +96,7 @@ class Overview extends Component {
       totalPrevious.push(previous_value)
     }
 
-    if (artist.spotifyHandle) {
+    if (artist.spotifyHandle && artist.spotifyData[0]) {
       current_value = 0
       previous_value = 0
       if (artist.spotifyData[artist.spotifyData.length-timeDifference]) {
@@ -117,7 +117,7 @@ class Overview extends Component {
       totalPrevious.push(previous_value)
     }
 
-    if (artist.facebookHandle) {
+    if (artist.facebookHandle && artist.facebookData[0]) {
       current_value = 0
       previous_value = 0
       if (artist.facebookData[artist.facebookData.length-timeDifference]) {
@@ -138,7 +138,7 @@ class Overview extends Component {
       totalPrevious.push(previous_value)
     }
 
-    if (artist.twitterHandle) {
+    if (artist.twitterHandle && artist.twitterData[0]) {
       current_value = 0
       previous_value = 0
       if (artist.twitterData[artist.twitterData.length-timeDifference]) {
