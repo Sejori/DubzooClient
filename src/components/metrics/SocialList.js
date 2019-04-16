@@ -43,7 +43,6 @@ class SocialList extends Component {
       }
 
       // if youtube -> create youtube graphs
-      console.log(this.props.user.jwt)
       if (artist.youtubeHandle && artist.youtubeData[0]) {
         socials.push({
           handle: artist.youtubeHandle,

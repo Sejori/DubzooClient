@@ -7,7 +7,7 @@ import React, { Component } from 'react'
 import Header from './Header'
 import SocialList from './metrics/SocialList'
 import ArtistList from './artists/ArtistList'
-import Superfans from './superfans/Superfans.js'
+import Instafans from './instafans/Instafans.js'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
 class App extends Component {
@@ -60,7 +60,7 @@ class App extends Component {
             <Tab>Superfans</Tab>
           </TabList>
           <TabPanel key="Metrics"><SocialList user={this.state.user} artist={this.state.selectedArtist} /></TabPanel>
-          <TabPanel key="Superfans"><Superfans user={this.state.user} artist={this.state.selectedArtist} /></TabPanel>
+          <TabPanel key="Superfans"><Instafans user={this.state.user} artist={this.state.selectedArtist} /></TabPanel>
         </Tabs>
       } else {
         containerContent = <p>Create or select an artist to see their metrics.</p>
