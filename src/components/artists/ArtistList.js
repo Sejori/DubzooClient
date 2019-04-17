@@ -34,7 +34,6 @@ class ArtistList extends Component {
       }
     })
     let artist = await response.json()
-    console.log(artist)
     this.setState({
       editingArtist: await artist._id,
       editingArtistName: await artist.artistName,

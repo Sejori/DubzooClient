@@ -1,7 +1,8 @@
 //                SUPERFANS TAB
 //
 // This is the parent component for all of the superfans functionality in the app
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import axios from 'axios'
 import keys from '../../config/keys'
 
 class Instafans extends Component {
@@ -11,40 +12,50 @@ class Instafans extends Component {
     this.state = { responseData: [] }
   }
 
-  getInformation = async() => {
+  getNewInformation = async() => {
     let instagramHandle = this.props.artist.instagramHandle
 
     let responses = await fetch(keys.SCRAPER_URI + '/instafans?handle=' + instagramHandle)
     let json = await responses.json()
-    console.log(json)
+    this.updateInstagramPostData(json)
   }
 
-  makeInstagramRequests = async(requests) => {
-    var i
-    let url = []
-    let headers = []
-    let responses = []
-    let json = []
+  updateInstagramPostData = (data) => {
 
-    for (i=0; i<requests.length; i++) {
-      url[i] = requests[i].url
-      headers[i] = requests[i].headers
-      try {
-        responses[i] = await fetch(url[i], { headers: headers[i] })
-        json[i] = responses[i].json()
-      } catch(error) {
-        console.log(error)
+    // CREATE NEW POST DATA AND ASSIGN TO USER
+    axios({
+      method: 'post',
+      url: keys.STRAPI_URI + "/instagramposts",
+      data: {
+        data: data,
+        artist: this.props.artist._id
+      },
+      headers: {
+        Authorization: 'Bearer ' + this.props.user.jwt
       }
-    }
-    return responses
+    })
+    .then(response => {
+      // Handle success.
+      console.log(
+        'Well done, your post data has been successfully added: ',
+        response.data
+      )
+    })
+
   }
 
   render() {
+    let existingData
+    if (this.props.artist.instagramPostData) {
+      existingData = this.props.artist.instagramPostData
+      console.log("existing data: " + existingData)
+    }
 
     return(
-      <div className="get-fans">
+      <div className="instafans">
         <h4 style={{textAlign: "center"}}>The superfans section is currently in development - check back soon to see more!</h4>
-        <button className="btn btn-primary" onClick={this.getInformation}>Get Instagram Fan Info</button>
+        <br />
+        <button className="btn btn-primary" onClick={this.getNewInformation}>Get New Instagram Fan Info</button>
         {this.state.responseData}
       </div>
     )

@@ -99,6 +99,8 @@ input { border: none; margin: 1px; }
     text-transform:capitalize;
 }
 
+.instafans { display: flex; flex-direction: column; align-items: center; }
+
 .footer {
   display: flex;
   justify-content: center;
