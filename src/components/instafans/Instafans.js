@@ -41,7 +41,6 @@ class Instafans extends Component {
         response.data
       )
     })
-
   }
 
   render() {

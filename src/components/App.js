@@ -7,8 +7,6 @@ import React, { Component } from 'react'
 import Header from './Header'
 import SocialList from './metrics/SocialList'
 import ArtistList from './artists/ArtistList'
-import Instafans from './instafans/Instafans.js'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
 class App extends Component {
   constructor(props) {
@@ -54,14 +52,7 @@ class App extends Component {
       appContent = <ArtistList user={this.state.user} updateUser={this.updateUser} SelectArtist={this.SelectArtist} artist={this.state.selectedArtist}/>
 
       if (this.state.selectedArtist.artistName) {
-        containerContent = <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
-          <TabList>
-            <Tab>Metrics</Tab>
-            <Tab>Superfans</Tab>
-          </TabList>
-          <TabPanel key="Metrics"><SocialList user={this.state.user} artist={this.state.selectedArtist} /></TabPanel>
-          <TabPanel key="Superfans"><Instafans user={this.state.user} artist={this.state.selectedArtist} /></TabPanel>
-        </Tabs>
+        containerContent = <SocialList user={this.state.user} artist={this.state.selectedArtist} />
       } else {
         containerContent = <p>Create or select an artist to see their metrics.</p>
       }
