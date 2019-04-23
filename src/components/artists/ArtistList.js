@@ -249,6 +249,7 @@ class ArtistList extends Component {
         <div className='artist-editor'>
           {editingTitle}
           <p>Make sure to enter artist names in lower case and exactly as they appear if [social].com/ entry type is shown.</p>
+          <p>New artist data is fetched daily.</p>
           <div className="artist-edit-row">
             <p>Artist Name:</p>&nbsp;
             <input
