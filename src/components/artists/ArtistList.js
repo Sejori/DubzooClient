@@ -320,8 +320,8 @@ class ArtistList extends Component {
             />
           </div>
           <div className="artist-edit-row">
-            <button className="btn btn-secondary" onClick={this.CancelEdit}>Close</button>
-            <button className="btn btn-success" onClick={this.SubmitEdit}>Submit</button>
+            <button className="btn" onClick={this.CancelEdit}>Close</button>
+            <button className="btn submit-button" onClick={this.SubmitEdit}>Submit</button>
           </div>
         </div>
     }
@@ -338,11 +338,10 @@ class ArtistList extends Component {
         key={ item._id }
         index={ index } />
     )
-    artistBlocks.push(<button className="btn btn-primary btn-sm" onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button>)
+    artistBlocks.push(<li><button className="btn btn-sm new-artist-button" onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button></li>)
 
     return(
       <div className="artists">
-        <h4>Your artists</h4>
         <ul className="nav nav-pills artist-list">
           {artistBlocks}
         </ul>

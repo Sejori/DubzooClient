@@ -3,8 +3,7 @@
   flex-wrap: wrap;
   justify-content: center;
   border-bottom: none;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 10px;
 }
 
 .react-tabs__tab {

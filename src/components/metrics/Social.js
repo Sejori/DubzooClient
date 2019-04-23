@@ -71,8 +71,6 @@ class Social extends Component {
 
     // need many graphs due to difference in scale of metrics
     for (i=0; i<graphDataSets.length; i++) {
-      var current_value = 0
-      var previous_value = 0
 
       graphData[i] = {}
       graphData[i].datasets = [graphDataSets[i]]
@@ -95,26 +93,10 @@ class Social extends Component {
         }
       }
 
-      if (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-2]) {
-        previous_value = (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-2].y)
-      }
-
-      if (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-1]) {
-        current_value = (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-1].y)
-      }
-
-      let changeValue = current_value - previous_value
-      let changePercent = ((changeValue / this.props.previous_value) * 100).toFixed(2);
-      let changeIcon = '-'
-      if (changeValue > 0) changeIcon = '⬆️'
-      if (changeValue < 0) changeIcon = '⬇️'
-
       graphs[i] = <div className="card mb-3" style={{borderWidth: "1px", borderColor: this.props.colour, width: "30rem"}} key={graphData[i].datasets[0].label}>
-        <div className="card-header">{this.props.social} @{this.props.handle}</div>
+        <div className="card-header" style={{backgroundColor: this.props.colour, color: "white"}}>{this.props.social} {this.createName(graphData[i].datasets[0].label)} @{this.props.handle}</div>
         <div className="card-body">
-          <h2 className="card-title" style={{textAlign: "center"}}>{this.createName(graphData[i].datasets[0].label)}</h2>
           <Line data={graphData[i]} options={options} key={i}/>
-          <p className="card-text">{changeIcon} {changeValue} {changePercent}% (past 24hrs)</p>
         </div>
       </div>
     }

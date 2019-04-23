@@ -34,7 +34,7 @@ class Header extends Component {
   render() {
 
     var menu
-    var menuButton = <button className="btn btn-primary" onClick={this.toggleActive}>{this.state.buttonText}</button>
+    var menuButton = <button className="btn menu-button" onClick={this.toggleActive}>{this.state.buttonText}</button>
 
     var barrier = <div>
       <h2>Enter access password</h2>

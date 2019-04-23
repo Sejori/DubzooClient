@@ -47,7 +47,8 @@ class SocialList extends Component {
         socials.push({
           handle: artist.youtubeHandle,
           data: artist.youtubeData || [],
-          social: 'youtube'
+          social: 'youtube',
+          colour: "#FF0000"
         })
       }
 
@@ -56,7 +57,8 @@ class SocialList extends Component {
         socials.push({
           handle: artist.soundcloudHandle,
           data: artist.soundcloudData || [],
-          social: 'soundcloud'
+          social: 'soundcloud',
+          colour: "#ff7700"
         })
       }
 
@@ -65,7 +67,8 @@ class SocialList extends Component {
         socials.push({
           handle: artist.spotifyHandle,
           data: artist.spotifyData || [],
-          social: 'spotify'
+          social: 'spotify',
+          colour: "#1DB954"
         })
       }
 
@@ -74,7 +77,8 @@ class SocialList extends Component {
         socials.push({
           handle: artist.instagramHandle,
           data: artist.instagramData || [],
-          social: 'instagram'
+          social: 'instagram',
+          colour: "#C13584"
         })
       }
 
@@ -83,7 +87,8 @@ class SocialList extends Component {
         socials.push({
           handle: artist.facebookHandle,
           data: artist.facebookData || [],
-          social: 'facebook'
+          social: 'facebook',
+          colour: "#4267b2"
         })
       }
 
@@ -92,7 +97,8 @@ class SocialList extends Component {
         socials.push({
           handle: artist.twitterHandle,
           data: artist.twitterData || [],
-          social: 'twitter'
+          social: 'twitter',
+          colour: "#38A1F3"
         })
       }
 
@@ -117,6 +123,7 @@ class SocialList extends Component {
               handle={ item.handle }
               data={ item.data }
               social={ item.social }
+              colour={ item.colour }
               key={ item.social }
             />
           </TabPanel>

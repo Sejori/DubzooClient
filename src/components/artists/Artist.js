@@ -21,8 +21,8 @@ class Artist extends Component {
             {this.props.artist.artistName}
           </div>
         </h4>
-        <button className="btn btn-info btn-sm" onClick={this.props.EditArtist}>Edit</button>
-        <button className="btn btn-warning btn-sm" onClick={this.props.DeleteArtist}>Delete</button>
+        <button className="btn btn-sm edit-button" onClick={this.props.EditArtist}>Edit</button>
+        <button className="btn btn-sm delete-button" onClick={this.props.DeleteArtist}>Delete</button>
       </li>
     )
   }

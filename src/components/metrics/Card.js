@@ -22,11 +22,11 @@ class Card extends Component {
 
     return(
       <div className='card mb-3' style={{borderWidth: "1px", borderColor: this.props.colour, width: "20rem"}}>
-        <div className="card-header">{this.props.platform} @{this.props.handle}</div>
+        <div className="card-header" style={{backgroundColor: this.props.colour, color: 'white'}}>{this.props.platform} {this.props.metric} @{this.props.handle}</div>
         <div className="card-body">
-          <h4 className="card-title" style={{textAlign: "center"}}>{this.props.metric}</h4>
           <h2 className="card-title" style={{textAlign: "center"}}>{this.withCommas(this.props.current_value)}</h2>
-          <p className="card-text">{changeIcon} {changeValue} {changePercent}%</p>
+          <h4 className="card-title" style={{textAlign: "center", color: "grey"}}>{this.withCommas(this.props.previous_value)}</h4>
+          <h4 style={{textAlign: "right"}}>{changeValue} {changeIcon} ({changePercent}%)</h4>
         </div>
       </div>
     )

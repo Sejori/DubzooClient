@@ -177,7 +177,7 @@ class Overview extends Component {
         <div className="overview-total">
           <Card
             platform={"Total"}
-            color={"#ffffff"}
+            colour={"#333"}
             handle={artist.artistName}
             metric={"Followers"}
             current_value={totalCurrent.reduce(function(total,num) {return Number(total) + Number(num)})}

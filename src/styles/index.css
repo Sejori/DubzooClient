@@ -10,13 +10,16 @@ h4    { margin: 0px; }
 p     { margin: 0px; font-size: 12px; }
 input { border: none; margin: 1px; }
 .row  { display: flex; flex-wrap: wrap; justify-content: center; }
+.container      { padding: 0px; }
 .container p    { text-align: center; }
 .nav-link       { padding: 5px; }
 .recent-stats   { text-align: left; }
 .header *       { margin: 10px; }
-.menu           { margin:30px; width: 250px; margin-left: auto; margin-right: auto; text-align: center; }
+.menu           { width: 250px; margin-left: auto; margin-right: auto; text-align: center; }
 .menu *         { margin: 5px; }
 .artist-block * { margin: 2px; }
+.app-main       { padding: 10px; }
+.form-group     { padding: 10px; }
 
 .header {
   padding: 10px;
@@ -30,27 +33,40 @@ input { border: none; margin: 1px; }
   border-width: 0px 0px 1px 0px;
 }
 
+.menu-button { background-color: #5801C3; color: white; }
+
 .app-main {
-  margin: 10px;
   flex-grow: 1;
 }
 
 .artist-list {
-  margin: 10px;
-  margin-left: 15px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow: auto;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .artist-list li {
-  margin-bottom: 10px;
   padding: 5px;
 }
+
+.artist-list li:last-child {
+  padding-right: 20px;
+}
+
+.artists-title { margin-left: 20px; }
 
 .artist-block {
   text-align: center;
   display: inline-block;
+  min-width: 150px;
 }
+
+.new-artist-button { background-color: #0095EC; color: white; height: 80px; width: 80px; }
+.edit-button { background-color: #FF5733; color: white; }
+.delete-button { background-color: #C70039; color: white; }
+.submit-button { background-color: #13C1A8; color: white; }
 
 .artist-editor {
   margin-top: 30px;
@@ -58,6 +74,9 @@ input { border: none; margin: 1px; }
   border: solid;
   border-color: #5801c3;
   border-radius: 10px;
+  border-width: 2px;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 5px #777;
 }
 
 .artist-edit-row {
@@ -73,6 +92,7 @@ input { border: none; margin: 1px; }
 .overview-total {
   display: flex;
   justify-content: center;
+  margin: 10px;
 }
 
 .time-toggles { display: flex; justify-content: center; }
@@ -80,8 +100,6 @@ input { border: none; margin: 1px; }
 
 .card {
   margin: 10px;
-  margin-top: 30px;
-  margin-bottom: 0px;
 }
 
 .social-list {
@@ -93,13 +111,12 @@ input { border: none; margin: 1px; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding: 10px;
 }
 
 .social h2:first-letter {
     text-transform:capitalize;
 }
-
-.instafans { display: flex; flex-direction: column; align-items: center; }
 
 .footer {
   display: flex;

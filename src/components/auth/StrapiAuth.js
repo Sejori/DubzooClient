@@ -195,7 +195,7 @@ class StrapiAuth extends Component {
         )
       default:
         return(
-          <div>
+          <div className="form-group">
             <button className="btn btn-secondary btn-sm" onClick={() => this.changeView("login")}>Login</button>
             <button className="btn btn-secondary btn-sm" onClick={() => this.changeView("register")}>Register</button>
             <button className="btn btn-secondary btn-sm" onClick={() => this.changeView("forgot-password")}>Forgot password?</button>
@@ -204,7 +204,7 @@ class StrapiAuth extends Component {
     }
     } else {
       return(
-        <div>
+        <div className="form-group">
           <button className="btn btn-secondary" onClick={this.logout}>LOGOUT</button>
         </div>
       )
