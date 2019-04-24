@@ -24,9 +24,11 @@ class Card extends Component {
       <div className='card mb-3' style={{borderWidth: "1px", borderColor: this.props.colour, width: "20rem"}}>
         <div className="card-header" style={{backgroundColor: this.props.colour, color: 'white'}}>{this.props.platform} {this.props.metric} @{this.props.handle}</div>
         <div className="card-body">
-          <h2 className="card-title" style={{textAlign: "center"}}>{this.withCommas(this.props.current_value)}</h2>
-          <h4 className="card-title" style={{textAlign: "center", color: "grey"}}>{this.withCommas(this.props.previous_value)}</h4>
-          <h4 style={{textAlign: "right"}}>{changeValue} {changeIcon} ({changePercent}%)</h4>
+          <div className="row">
+            <p className="card-title" style={{textAlign: "center", color: "grey", alignSelf: "center"}}>{this.withCommas(this.props.previous_value)}→</p>
+            <h2 className="card-title" style={{textAlign: "center"}}>{this.withCommas(this.props.current_value)}</h2>
+          </div>
+          <h4 style={{textAlign: "center", color: "grey"}}>{changeValue} {changeIcon} ({changePercent}%)</h4>
         </div>
       </div>
     )

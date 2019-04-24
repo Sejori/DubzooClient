@@ -339,7 +339,7 @@ class ArtistList extends Component {
         key={ item._id }
         index={ index } />
     )
-    artistBlocks.push(<li><button className="btn btn-sm new-artist-button" onClick={this.NewArtist} key={artistBlocks.length}>Add Artist</button></li>)
+    artistBlocks.push(<li key="newArtist"><button className="btn btn-sm new-artist-button" onClick={this.NewArtist}>Add Artist</button></li>)
 
     return(
       <div className="artists">

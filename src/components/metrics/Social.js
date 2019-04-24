@@ -3,7 +3,8 @@
 // Creates graphs of social data passed in as props
 
 import React, { Component } from 'react';
-import { Line } from 'react-chartjs-2';
+
+import Graph from './Graph.js'
 
 class Social extends Component {
 
@@ -65,6 +66,7 @@ class Social extends Component {
           graphDataSets[i].data[j].x = this.props.data[j].date_requested
           graphDataSets[i].data[j].y = this.props.data[j][key]
         }
+
         i++
       }
     }
@@ -93,12 +95,15 @@ class Social extends Component {
         }
       }
 
-      graphs[i] = <div className="card mb-3" style={{borderWidth: "1px", borderColor: this.props.colour, width: "30rem"}} key={graphData[i].datasets[0].label}>
-        <div className="card-header" style={{backgroundColor: this.props.colour, color: "white"}}>{this.props.social} {this.createName(graphData[i].datasets[0].label)} @{this.props.handle}</div>
-        <div className="card-body">
-          <Line data={graphData[i]} options={options} key={i}/>
-        </div>
-      </div>
+      //momentum[i] = graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-1].y - graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-2].y
+      let currentValue = graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-1].y
+      let prevValue = 0
+      if (graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-2]) prevValue = graphData[i].datasets[0].data[graphData[i].datasets[0].data.length-2].y
+
+      let momentum = []
+      momentum[i] = currentValue - prevValue
+
+      graphs[i] = <Graph key={i} latestValue={currentValue} momentum={momentum[i]} colour={this.props.colour} graphData={graphData[i]} social={this.props.social} name={graphData[i].datasets[0].label} handle={this.props.handle} options={options}/>
     }
 
     return(
